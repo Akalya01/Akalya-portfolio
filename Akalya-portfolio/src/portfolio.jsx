@@ -317,8 +317,19 @@ export default function Portfolio(){
     const blob=new Blob([html],{type:"text/html"});const url=URL.createObjectURL(blob);const a=document.createElement("a");a.href=url;a.download="Akalya_A_Resume.html";document.body.appendChild(a);a.click();document.body.removeChild(a);URL.revokeObjectURL(url);
   };
 
+  useEffect(()=>{
+    // Set page title
+    document.title="Akalya A — Full Stack Developer";
+    // Set favicon as inline SVG data URI
+    const favicon=document.querySelector("link[rel='icon']")||document.createElement("link");
+    favicon.rel="icon";
+    favicon.type="image/svg+xml";
+    favicon.href=`data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%237C7D52'/><text x='50' y='72' text-anchor='middle' font-family='Georgia,serif' font-size='62' font-weight='700' fill='%23F5F5F2'>A</text></svg>`;
+    document.head.appendChild(favicon);
+  },[]);
+
   return(
-    <div style={{background:T.bg,color:T.text,fontFamily:"'Outfit',sans-serif",minHeight:"100vh",width:"100%",cursor:"none",overflowX:"hidden"}}>
+    <div style={{background:T.bg,color:T.text,fontFamily:"'Outfit',sans-serif",minHeight:"100vh",width:"100vw",maxWidth:"100vw",cursor:"none",overflowX:"hidden"}}>
       <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet"/>
       <Cursor/>
       <ParticleBg/>
@@ -337,7 +348,8 @@ export default function Portfolio(){
       <style>{`
         @import url('https://api.fontshare.com/v2/css?f[]=clash-display@700,600,500&display=swap');
         *{box-sizing:border-box;margin:0;padding:0}
-        html,body,#root{background:${T.bg}!important;width:100%;min-height:100vh}
+        html,body{background:${T.bg}!important;width:100%;max-width:100vw;min-height:100vh;overflow-x:hidden}
+        #root{background:${T.bg}!important;width:100%;max-width:100vw;min-height:100vh}
         html{scroll-behavior:smooth}
         ::selection{background:${T.primary}35;color:${T.primary}}
         ::-webkit-scrollbar{width:4px}
