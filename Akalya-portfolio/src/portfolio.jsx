@@ -214,8 +214,8 @@ function SecHead({tag,title,sub}){
         <div style={{display:"flex",gap:4}}><div style={{width:16,height:2,background:T.primary,borderRadius:2,boxShadow:`0 0 8px ${T.primary}`}}/><div style={{width:6,height:2,background:`${T.primary}55`,borderRadius:2}}/><div style={{width:3,height:2,background:`${T.primary}33`,borderRadius:2}}/></div>
         <span style={{fontFamily:"'Outfit',sans-serif",fontSize:13,color:T.primary,letterSpacing:5,textTransform:"uppercase",fontWeight:700}}>{tag}</span>
       </div>
-      <h2 style={{fontFamily:"'Clash Display',sans-serif",fontSize:"clamp(36px,5vw,62px)",fontWeight:700,color:T.white,lineHeight:1.04,letterSpacing:-1.5,marginBottom:sub?18:0,opacity:vis?1:0,transform:vis?"translateY(0)":"translateY(20px)",transition:"opacity .9s cubic-bezier(.16,1,.3,1) .1s,transform .9s cubic-bezier(.16,1,.3,1) .1s"}}>{title}</h2>
-      {sub&&<p style={{fontFamily:"'Outfit',sans-serif",fontSize:19,color:T.gray,maxWidth:580,lineHeight:1.85,opacity:vis?1:0,transform:vis?"translateY(0)":"translateY(14px)",transition:"opacity .9s cubic-bezier(.16,1,.3,1) .2s,transform .9s cubic-bezier(.16,1,.3,1) .2s"}}>{sub}</p>}
+      <h2 style={{fontFamily:"'Clash Display',sans-serif",fontSize:"clamp(28px,5vw,62px)",fontWeight:700,color:T.white,lineHeight:1.04,letterSpacing:-1.5,marginBottom:sub?18:0,opacity:vis?1:0,transform:vis?"translateY(0)":"translateY(20px)",transition:"opacity .9s cubic-bezier(.16,1,.3,1) .1s,transform .9s cubic-bezier(.16,1,.3,1) .1s"}}>{title}</h2>
+      {sub&&<p style={{fontFamily:"'Outfit',sans-serif",fontSize:"clamp(14px,2vw,19px)",color:T.gray,maxWidth:580,lineHeight:1.85,opacity:vis?1:0,transform:vis?"translateY(0)":"translateY(14px)",transition:"opacity .9s cubic-bezier(.16,1,.3,1) .2s,transform .9s cubic-bezier(.16,1,.3,1) .2s"}}>{sub}</p>}
     </div>
   );
 }
@@ -240,40 +240,40 @@ function ExpCard({exp,idx}){
   const proj=exp.projects[selProj];
   return(
     <div ref={ref} style={{opacity:vis?1:0,transform:vis?"translateY(0)":"translateY(40px)",border:`1px solid ${open?exp.color+"33":T.border}`,background:open?`${T.bg1}`:"transparent",borderRadius:16,overflow:"hidden",boxShadow:open?`0 0 60px ${exp.color}06,inset 0 1px 0 ${exp.color}10`:"none",transition:`opacity .9s cubic-bezier(.16,1,.3,1) ${idx*.12}s,transform .9s cubic-bezier(.16,1,.3,1) ${idx*.12}s,border-color .4s,background .4s,box-shadow .4s`}}>
-      <div data-c={open?"Close":"Open"} onClick={()=>setOpen(o=>!o)} style={{padding:"28px 32px",display:"flex",justifyContent:"space-between",alignItems:"center",flexWrap:"wrap",gap:12,cursor:"none"}} className="exp-header">
-        <div>
-          <div style={{display:"flex",alignItems:"center",gap:10,marginBottom:10,flexWrap:"wrap"}}>
-            <span style={{fontFamily:"'Outfit',sans-serif",fontSize:10,color:exp.color,background:`${exp.color}12`,border:`1px solid ${exp.color}35`,padding:"3px 14px",borderRadius:100,letterSpacing:2.5,textTransform:"uppercase",fontWeight:700}}>{exp.type}</span>
-            <span style={{fontFamily:"'Outfit',sans-serif",fontSize:12,color:T.gray}}>{exp.period}</span>
-            <span style={{fontFamily:"'Outfit',sans-serif",fontSize:12,color:T.gray}}>📍 {exp.location}</span>
+      <div data-c={open?"Close":"Open"} onClick={()=>setOpen(o=>!o)} style={{padding:"24px 20px",display:"flex",justifyContent:"space-between",alignItems:"center",flexWrap:"wrap",gap:12,cursor:"none"}} className="exp-header">
+        <div style={{flex:1,minWidth:0}}>
+          <div style={{display:"flex",alignItems:"center",gap:8,marginBottom:10,flexWrap:"wrap"}}>
+            <span style={{fontFamily:"'Outfit',sans-serif",fontSize:10,color:exp.color,background:`${exp.color}12`,border:`1px solid ${exp.color}35`,padding:"3px 12px",borderRadius:100,letterSpacing:2,textTransform:"uppercase",fontWeight:700,whiteSpace:"nowrap"}}>{exp.type}</span>
+            <span style={{fontFamily:"'Outfit',sans-serif",fontSize:11,color:T.gray,whiteSpace:"nowrap"}}>{exp.period}</span>
+            <span style={{fontFamily:"'Outfit',sans-serif",fontSize:11,color:T.gray,whiteSpace:"nowrap"}}>📍 {exp.location}</span>
           </div>
-          <h3 style={{fontFamily:"'Clash Display',sans-serif",fontSize:21,fontWeight:700,color:T.white,marginBottom:5}}>{exp.company}</h3>
+          <h3 style={{fontFamily:"'Clash Display',sans-serif",fontSize:"clamp(16px,2.5vw,21px)",fontWeight:700,color:T.white,marginBottom:5,wordBreak:"break-word"}}>{exp.company}</h3>
           <p style={{fontFamily:"'Outfit',sans-serif",fontSize:13,color:exp.color,fontWeight:600,letterSpacing:.8}}>{exp.role}</p>
         </div>
         <div style={{width:38,height:38,borderRadius:"50%",border:`1.5px solid ${open?exp.color:T.borderHi}`,display:"flex",alignItems:"center",justifyContent:"center",color:open?exp.color:T.gray,fontSize:18,transition:"all .4s cubic-bezier(.16,1,.3,1)",transform:open?"rotate(45deg)":"rotate(0)",background:open?`${exp.color}12`:"transparent",boxShadow:open?`0 0 18px ${exp.color}33`:"none",flexShrink:0}}>+</div>
       </div>
-      <div style={{maxHeight:open?1400:0,overflow:"hidden",transition:"max-height .8s cubic-bezier(.16,1,.3,1)"}}>
-        <div style={{padding:"0 32px 32px"}}>
-          <p style={{fontFamily:"'Outfit',sans-serif",fontSize:14,color:T.gray,lineHeight:1.85,marginBottom:22,paddingTop:18,borderTop:`1px solid ${T.border}`}}>{exp.summary}</p>
+      <div style={{maxHeight:open?2000:0,overflow:"hidden",transition:"max-height .8s cubic-bezier(.16,1,.3,1)"}}>
+        <div style={{padding:"0 20px 28px"}}>
+          <p style={{fontFamily:"'Outfit',sans-serif",fontSize:13.5,color:T.gray,lineHeight:1.85,marginBottom:22,paddingTop:18,borderTop:`1px solid ${T.border}`}}>{exp.summary}</p>
           {exp.projects.length>1&&(
-            <div style={{display:"flex",gap:8,flexWrap:"wrap",marginBottom:22}}>
+            <div style={{display:"flex",gap:7,flexWrap:"wrap",marginBottom:22}}>
               {exp.projects.map((p,i)=>(
-                <button key={p.name} onClick={()=>setSelProj(i)} style={{fontFamily:"'Outfit',sans-serif",fontSize:11,padding:"6px 16px",borderRadius:8,border:`1px solid ${i===selProj?p.color:T.border}`,background:i===selProj?`${p.color}14`:T.bg,color:i===selProj?p.color:T.gray,cursor:"none",transition:"all .3s cubic-bezier(.16,1,.3,1)",fontWeight:600,letterSpacing:.5,boxShadow:i===selProj?`0 0 16px ${p.color}22`:"none"}}>{p.name}</button>
+                <button key={p.name} onClick={()=>setSelProj(i)} style={{fontFamily:"'Outfit',sans-serif",fontSize:11,padding:"6px 14px",borderRadius:8,border:`1px solid ${i===selProj?p.color:T.border}`,background:i===selProj?`${p.color}14`:T.bg,color:i===selProj?p.color:T.gray,cursor:"none",transition:"all .3s cubic-bezier(.16,1,.3,1)",fontWeight:600,letterSpacing:.5,boxShadow:i===selProj?`0 0 16px ${p.color}22`:"none"}}>{p.name}</button>
               ))}
             </div>
           )}
-          <div style={{background:T.bg,border:`1px solid ${T.border}`,borderLeft:`2px solid ${proj.color}`,borderRadius:10,padding:"22px 24px",boxShadow:`0 0 30px ${proj.color}06`,animation:"fadeIn .4s ease both"}}>
-            <div style={{display:"flex",alignItems:"center",gap:12,marginBottom:16,flexWrap:"wrap"}}>
-              <span style={{fontFamily:"'Clash Display',sans-serif",fontSize:16,fontWeight:700,color:T.white}}>{proj.name}</span>
-              <div style={{display:"flex",gap:6,flexWrap:"wrap"}}>
-                {proj.tech.map(t=>(<span key={t} style={{fontFamily:"'Outfit',sans-serif",fontSize:10,color:proj.color,background:`${proj.color}10`,border:`1px solid ${proj.color}22`,padding:"2px 10px",borderRadius:100,letterSpacing:.5}}>{t}</span>))}
+          <div style={{background:T.bg,border:`1px solid ${T.border}`,borderLeft:`2px solid ${proj.color}`,borderRadius:10,padding:"20px 18px",boxShadow:`0 0 30px ${proj.color}06`,animation:"fadeIn .4s ease both"}}>
+            <div style={{display:"flex",alignItems:"flex-start",gap:10,marginBottom:14,flexWrap:"wrap"}}>
+              <span style={{fontFamily:"'Clash Display',sans-serif",fontSize:15,fontWeight:700,color:T.white}}>{proj.name}</span>
+              <div style={{display:"flex",gap:5,flexWrap:"wrap"}}>
+                {proj.tech.map(t=>(<span key={t} style={{fontFamily:"'Outfit',sans-serif",fontSize:10,color:proj.color,background:`${proj.color}10`,border:`1px solid ${proj.color}22`,padding:"2px 9px",borderRadius:100,letterSpacing:.5}}>{t}</span>))}
               </div>
             </div>
-            <ul style={{listStyle:"none",display:"flex",flexDirection:"column",gap:11}}>
+            <ul style={{listStyle:"none",display:"flex",flexDirection:"column",gap:10}}>
               {proj.bullets.map((b,i)=>(
-                <li key={i} style={{display:"flex",gap:12,alignItems:"flex-start"}}>
+                <li key={i} style={{display:"flex",gap:10,alignItems:"flex-start"}}>
                   <span style={{color:proj.color,fontSize:11,marginTop:4,flexShrink:0}}>▹</span>
-                  <span style={{fontFamily:"'Outfit',sans-serif",fontSize:13.5,color:T.textDim,lineHeight:1.75}}>{b}</span>
+                  <span style={{fontFamily:"'Outfit',sans-serif",fontSize:13,color:T.textDim,lineHeight:1.75}}>{b}</span>
                 </li>
               ))}
             </ul>
@@ -299,6 +299,7 @@ export default function Portfolio(){
   const [menuOpen,setMenuOpen]=useState(false);
   const [loaded,setLoaded]=useState(false);
   const isMobile=useMediaQuery("(max-width:768px)");
+  const isTablet=useMediaQuery("(max-width:1024px)");
   const typed=useTypewriter(["Full Stack Developer","Software Developer","React Developer","Junior Application Developer","Frontend Developer"]);
 
   useEffect(()=>{setTimeout(()=>setLoaded(true),100);},[]);
@@ -411,8 +412,8 @@ export default function Portfolio(){
         .contact-card:hover::before{transform:scaleX(1)}
         .contact-card:hover::after{opacity:1}
         .contact-card:hover{border-color:${T.primary}66!important;transform:translateY(-6px) scale(1.02);box-shadow:0 16px 48px ${T.primary}16}
-        .exp-header{transition:background .3s,padding-left .3s}
-        .exp-header:hover{background:${T.primary}07!important;padding-left:36px!important}
+        .exp-header{transition:background .3s}
+        .exp-header:hover{background:${T.primary}07!important}
         .ripple-badge{position:relative}
         .ripple-badge::before,.ripple-badge::after{content:'';position:absolute;inset:-5px;border-radius:100px;border:1px solid ${T.primary}44;animation:rippleOut 2.5s ease-out infinite;pointer-events:none}
         .ripple-badge::after{animation-delay:1.25s}
@@ -432,21 +433,122 @@ export default function Portfolio(){
         .footer-logo{transition:all .3s cubic-bezier(.16,1,.3,1)}
         .footer-logo:hover{transform:scale(1.15) rotate(10deg);box-shadow:0 0 18px ${T.primary}55!important}
         .footer-row{transition:border-color .3s}
+
+        /* ═══ RESPONSIVE BREAKPOINTS ═══ */
+
+        /* Large tablets and small desktops */
+        @media(max-width:1024px){
+          .about-grid-inner{grid-template-columns:1fr 1fr!important}
+          .about-col-7{grid-column:span 1!important}
+          .about-col-5{grid-column:span 1!important}
+          .about-col-12{grid-column:span 2!important}
+          .edu-cred-grid{grid-template-columns:1fr 1fr!important}
+        }
+
+        /* Tablets */
+        @media(max-width:900px){
+          .orbital-rings{display:none!important}
+          .floating-tech{display:none!important}
+          .section-pad{padding:80px 5%!important}
+          .hero-section{padding-left:4%!important;padding-right:4%!important}
+        }
+
+        /* Mobile */
         @media(max-width:768px){
           .deskNav,.status-badge{display:none!important}
           .mbBtn{display:flex!important}
           .orbital-rings{display:none!important}
-          .about-grid{grid-template-columns:1fr!important;gap:40px!important}
-          .stats-row{gap:28px!important}
-          .counter-num{font-size:38px!important}
-          .section-pad{padding:70px 5%!important}
-          .footer-row{flex-direction:column!important;gap:8px!important}
           .floating-tech{display:none!important}
+
+          /* About section grid - full single column on mobile */
+          .about-grid-inner{display:flex!important;flex-direction:column!important;gap:12px!important}
+          .about-col-7,.about-col-5,.about-col-12{grid-column:unset!important;width:100%!important}
+
+          /* Contact details grid inside about */
+          .contact-details-grid{grid-template-columns:1fr!important}
+
+          /* Education creds grid */
+          .edu-cred-grid{grid-template-columns:1fr!important}
+
+          /* Stats row */
+          .stats-row{flex-direction:column!important;gap:0!important;width:100%!important}
+          .stat-cell{border-right:none!important;border-bottom:1px solid ${T.border}!important;padding-bottom:20px!important;padding-top:20px!important}
+          .stat-cell:last-child{border-bottom:none!important}
+          .counter-num{font-size:42px!important}
+
+          /* Section padding */
+          .section-pad{padding:64px 4%!important}
+          .hero-section{padding-top:120px!important;padding-bottom:60px!important;padding-left:4%!important;padding-right:4%!important}
+
+          /* Footer */
+          .footer-row{flex-direction:column!important;gap:10px!important;align-items:flex-start!important}
+
+          /* Hero CTA group */
+          .hero-cta-group{flex-direction:row!important;flex-wrap:wrap!important;justify-content:center!important;gap:8px!important}
+          .hero-cta-group > *{flex:1 1 auto!important;max-width:calc(50% - 4px)!important;justify-content:center!important;text-align:center!important;display:flex!important;padding:10px 14px!important;font-size:13px!important;white-space:nowrap!important}
+
+          /* Hero stats */
+          .hero-stats-wrap{flex-direction:column!important}
+
+          /* Social row */
+          .hero-social{justify-content:center!important;flex-wrap:wrap!important}
+
+          /* Role capsule */
+          .role-capsule{display:none!important}
+
+          /* What I do grid */
+          .what-grid{grid-template-columns:1fr!important}
+
+          /* Achievements grid */
+          .ach-grid{grid-template-columns:1fr!important}
+
+          /* Projects grid */
+          .proj-grid{grid-template-columns:1fr!important}
+
+          /* Skills grid */
+          .skills-grid{grid-template-columns:1fr!important}
+
+          /* Exp card padding */
+          .exp-header{padding:20px 16px!important}
+
+          /* Contact grid */
+          .contact-grid{grid-template-columns:1fr!important}
+
+          /* Contact social links */
+          .contact-socials{flex-direction:column!important;width:100%!important}
+          .contact-socials > *{width:100%!important;text-align:center!important;justify-content:center!important;display:flex!important}
+
+          /* Section heading */
+          .sec-head-mb{margin-bottom:48px!important}
+
+          /* About CGPA card */
+          .cgpa-num{font-size:58px!important}
+
+          /* Nav logo text */
+          .logo-text{display:none!important}
+
+          /* Scroll indicator */
+          .scroll-indicator{display:none!important}
+
+          /* Available badge */
+          .avail-badge{margin-bottom:24px!important}
+
+          /* Hero description */
+          .hero-desc{font-size:14px!important;margin-bottom:32px!important}
+        }
+
+        /* Very small phones */
+        @media(max-width:420px){
+          .hero-section{padding-left:3%!important;padding-right:3%!important}
+          .section-pad{padding:56px 3%!important}
+          .exp-header{padding:16px 14px!important}
+          .counter-num{font-size:36px!important}
+          .hero-cta-group > *{max-width:100%!important;width:100%!important;flex:1 1 100%!important}
         }
       `}</style>
 
       {/* ══ UPGRADED PREMIUM NAV ══ */}
-      <header style={{position:"fixed",top:0,left:0,right:0,zIndex:9000,padding:isMobile?"12px 5%":"16px 5%",pointerEvents:"none",display:"flex",alignItems:"center",justifyContent:"space-between"}}>
+      <header style={{position:"fixed",top:0,left:0,right:0,zIndex:9000,padding:isMobile?"12px 4%":"16px 5%",pointerEvents:"none",display:"flex",alignItems:"center",justifyContent:"space-between"}}>
         <div onClick={()=>go("Home")} data-c="" style={{
           pointerEvents:"all",cursor:"none",display:"flex",alignItems:"center",gap:10,
           background:"rgba(245,245,242,0.88)",backdropFilter:"blur(28px)",
@@ -458,10 +560,10 @@ export default function Portfolio(){
             <div style={{position:"absolute",inset:-3,borderRadius:"50%",border:`1px solid ${T.primary}22`,animation:"spinRing 8s linear infinite"}}/>
             <span style={{fontFamily:"'Clash Display',sans-serif",fontSize:13,color:T.primary,fontWeight:700}}>A</span>
           </div>
-          {!isMobile&&<div>
+          <div className="logo-text">
             <div style={{fontFamily:"'Clash Display',sans-serif",fontSize:17,color:T.white,fontWeight:700,lineHeight:1,letterSpacing:.5}}>Akalya<span style={{color:T.primary}}>.</span></div>
             <div style={{fontFamily:"'Outfit',sans-serif",fontSize:11,color:T.gray,letterSpacing:3,textTransform:"uppercase",marginTop:1}}>Developer</div>
-          </div>}
+          </div>
         </div>
         {!isMobile&&(
           <nav className="deskNav" style={{
@@ -487,8 +589,8 @@ export default function Portfolio(){
             </div>
           )}
           <button onClick={()=>go("Contact")} className="hire-cta" data-c=""
-            style={{background:T.primary,color:"#fff",border:"none",padding:"10px 24px",borderRadius:50,fontFamily:"'Outfit',sans-serif",fontSize:15,fontWeight:700,cursor:"none",letterSpacing:.5,boxShadow:`0 0 24px ${T.primary}44,0 4px 16px ${T.primary}33`}}>
-            <span>Hire Me ↗</span>
+            style={{background:T.primary,color:"#fff",border:"none",padding:isMobile?"9px 18px":"10px 24px",borderRadius:50,fontFamily:"'Outfit',sans-serif",fontSize:isMobile?13:15,fontWeight:700,cursor:"none",letterSpacing:.5,boxShadow:`0 0 24px ${T.primary}44,0 4px 16px ${T.primary}33`}}>
+            <span>{isMobile?"Hire":"Hire Me ↗"}</span>
           </button>
           {isMobile&&(
             <button className="mbBtn" onClick={()=>setMenuOpen(o=>!o)}
@@ -505,16 +607,16 @@ export default function Portfolio(){
       {isMobile&&menuOpen&&(
         <div style={{position:"fixed",inset:0,zIndex:8999,background:"rgba(245,245,242,0.98)",backdropFilter:"blur(24px)",display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",gap:6,animation:"fadeIn .3s ease"}}>
           {NAV_ITEMS.map((n,i)=>(
-            <button key={n} onClick={()=>go(n)} style={{background:"none",border:"none",fontFamily:"'Clash Display',sans-serif",fontSize:34,fontWeight:700,color:activeNav===n?T.primary:T.grayHi,cursor:"pointer",padding:"10px 50px",borderRadius:12,transition:"color .2s",animation:`fadeUp .4s ease ${i*.06}s both`,letterSpacing:-0.5}}>{n}</button>
+            <button key={n} onClick={()=>go(n)} style={{background:"none",border:"none",fontFamily:"'Clash Display',sans-serif",fontSize:"clamp(26px,8vw,34px)",fontWeight:700,color:activeNav===n?T.primary:T.grayHi,cursor:"pointer",padding:"10px 50px",borderRadius:12,transition:"color .2s",animation:`fadeUp .4s ease ${i*.06}s both`,letterSpacing:-0.5}}>{n}</button>
           ))}
         </div>
       )}
 
       {/* ══════════════ PREMIUM HERO ══════════════ */}
-      <section id="home" style={{minHeight:"100vh",display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",paddingTop:"130px",paddingBottom:"80px",paddingLeft:"6%",paddingRight:"6%",position:"relative",zIndex:1,textAlign:"center",overflow:"hidden"}}>
+      <section id="home" className="hero-section" style={{minHeight:"100vh",display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",paddingTop:"130px",paddingBottom:"80px",paddingLeft:"6%",paddingRight:"6%",position:"relative",zIndex:1,textAlign:"center",overflow:"hidden"}}>
 
         {/* Deep name glow */}
-        <div style={{position:"absolute",top:"50%",left:"50%",transform:"translate(-50%,-58%)",width:720,height:520,borderRadius:"50%",background:`radial-gradient(ellipse at center,${T.primary}0e 0%,${T.primary}05 40%,transparent 70%)`,filter:"blur(70px)",pointerEvents:"none",zIndex:0}}/>
+        <div style={{position:"absolute",top:"50%",left:"50%",transform:"translate(-50%,-58%)",width:"min(720px,90vw)",height:"min(520px,60vw)",borderRadius:"50%",background:`radial-gradient(ellipse at center,${T.primary}0e 0%,${T.primary}05 40%,transparent 70%)`,filter:"blur(70px)",pointerEvents:"none",zIndex:0}}/>
         <div style={{position:"absolute",top:"28%",left:"10%",width:280,height:280,borderRadius:"50%",background:`radial-gradient(circle,${T.primary}07,transparent 70%)`,filter:"blur(80px)",pointerEvents:"none",zIndex:0}}/>
         <div style={{position:"absolute",top:"38%",right:"8%",width:240,height:240,borderRadius:"50%",background:`radial-gradient(circle,${T.primary}06,transparent 70%)`,filter:"blur(70px)",pointerEvents:"none",zIndex:0}}/>
 
@@ -532,7 +634,7 @@ export default function Portfolio(){
         </div>
 
         {/* Floating tech micro-badges */}
-        {!isMobile&&[
+        {[
           {label:"React.js",  top:"22%",left:"6%",  delay:"0s"},
           {label:"Flutter",   top:"62%",left:"4%",  delay:"0.8s"},
           {label:"Socket.io", top:"20%",right:"5%", delay:"0.4s"},
@@ -548,18 +650,18 @@ export default function Portfolio(){
         <div style={{width:"100%",maxWidth:660,position:"relative",zIndex:2,display:"flex",flexDirection:"column",alignItems:"center"}}>
 
           {/* Available badge */}
-          <div className="ripple-badge" style={{display:"inline-flex",alignItems:"center",gap:9,background:`${T.primary}0c`,border:`1px solid ${T.primary}28`,borderRadius:100,padding:"7px 22px",marginBottom:40,backdropFilter:"blur(12px)",opacity:loaded?1:0,transform:loaded?"translateY(0)":"translateY(20px)",transition:"opacity .8s .1s,transform .8s cubic-bezier(.16,1,.3,1) .1s"}}>
+          <div className="ripple-badge avail-badge" style={{display:"inline-flex",alignItems:"center",gap:9,background:`${T.primary}0c`,border:`1px solid ${T.primary}28`,borderRadius:100,padding:"7px 22px",marginBottom:40,backdropFilter:"blur(12px)",opacity:loaded?1:0,transform:loaded?"translateY(0)":"translateY(20px)",transition:"opacity .8s .1s,transform .8s cubic-bezier(.16,1,.3,1) .1s"}}>
             <div style={{width:7,height:7,borderRadius:"50%",background:T.primary,boxShadow:`0 0 10px ${T.primary},0 0 18px ${T.primary}66`,animation:"pulse 2s ease-in-out infinite"}}/>
             <span style={{fontFamily:"'Outfit',sans-serif",fontSize:12,color:T.primary,fontWeight:600,letterSpacing:2}}>Available for Opportunities</span>
           </div>
 
-          {/* Greeting — small, light */}
-          <p style={{fontFamily:"'Outfit',sans-serif",fontSize:"clamp(13px,1.6vw,17px)",fontWeight:300,color:T.gray,letterSpacing:5,textTransform:"uppercase",marginBottom:8,opacity:loaded?1:0,transform:loaded?"translateY(0)":"translateY(14px)",transition:"opacity .9s .18s,transform .9s cubic-bezier(.16,1,.3,1) .18s"}}>Hi, I'm</p>
+          {/* Greeting */}
+          <p style={{fontFamily:"'Outfit',sans-serif",fontSize:"clamp(12px,1.6vw,17px)",fontWeight:300,color:T.gray,letterSpacing:5,textTransform:"uppercase",marginBottom:8,opacity:loaded?1:0,transform:loaded?"translateY(0)":"translateY(14px)",transition:"opacity .9s .18s,transform .9s cubic-bezier(.16,1,.3,1) .18s"}}>Hi, I'm</p>
 
-          {/* NAME — dominant */}
+          {/* NAME */}
           <div style={{position:"relative",marginBottom:10,opacity:loaded?1:0,transform:loaded?"translateY(0)":"translateY(30px)",transition:"opacity .9s .25s,transform .9s cubic-bezier(.16,1,.3,1) .25s"}}>
             <div style={{position:"absolute",inset:"-30px -60px",borderRadius:"50%",background:`radial-gradient(ellipse,${T.primary}12,transparent 65%)`,filter:"blur(28px)",pointerEvents:"none",zIndex:0}}/>
-            <h1 className="grad-text" style={{fontFamily:"'Clash Display',sans-serif",fontSize:"clamp(70px,11.5vw,134px)",fontWeight:700,lineHeight:.88,letterSpacing:-3.5,position:"relative",zIndex:1}}>Akalya. A</h1>
+            <h1 className="grad-text" style={{fontFamily:"'Clash Display',sans-serif",fontSize:"clamp(54px,11.5vw,134px)",fontWeight:700,lineHeight:.88,letterSpacing:-3.5,position:"relative",zIndex:1}}>Akalya. A</h1>
           </div>
 
           {/* Thin accent line */}
@@ -567,12 +669,12 @@ export default function Portfolio(){
 
           {/* Typewriter */}
           <div style={{display:"flex",alignItems:"center",justifyContent:"center",gap:10,marginBottom:20,minHeight:40,opacity:loaded?1:0,transform:loaded?"translateY(0)":"translateY(16px)",transition:"opacity .9s .38s,transform .9s cubic-bezier(.16,1,.3,1) .38s"}}>
-            <span style={{fontFamily:"'Outfit',sans-serif",fontSize:"clamp(17px,2.2vw,24px)",color:T.textDim,fontWeight:300,letterSpacing:.4}}>{typed}</span>
+            <span style={{fontFamily:"'Outfit',sans-serif",fontSize:"clamp(15px,2.2vw,24px)",color:T.textDim,fontWeight:300,letterSpacing:.4}}>{typed}</span>
             <span style={{display:"inline-block",width:2,height:"1em",background:T.primary,animation:"blink 1s step-end infinite",borderRadius:2,boxShadow:`0 0 10px ${T.primary}`}}/>
           </div>
 
           {/* Premium role capsule */}
-          <div style={{display:"inline-flex",alignItems:"center",gap:0,background:T.bg1,border:`1px solid ${T.border}`,borderRadius:100,padding:"9px 6px",marginBottom:30,backdropFilter:"blur(16px)",boxShadow:`0 2px 20px rgba(0,0,0,0.06),inset 0 1px 0 rgba(255,255,255,0.6)`,opacity:loaded?1:0,transform:loaded?"translateY(0)":"translateY(14px)",transition:"opacity .9s .44s,transform .9s cubic-bezier(.16,1,.3,1) .44s",flexWrap:"wrap",justifyContent:"center"}}>
+          <div className="role-capsule" style={{display:"inline-flex",alignItems:"center",gap:0,background:T.bg1,border:`1px solid ${T.border}`,borderRadius:100,padding:"9px 6px",marginBottom:30,backdropFilter:"blur(16px)",boxShadow:`0 2px 20px rgba(0,0,0,0.06),inset 0 1px 0 rgba(255,255,255,0.6)`,opacity:loaded?1:0,transform:loaded?"translateY(0)":"translateY(14px)",transition:"opacity .9s .44s,transform .9s cubic-bezier(.16,1,.3,1) .44s",flexWrap:"wrap",justifyContent:"center"}}>
             {["Full Stack Developer","React • Flutter","Real-time Systems","Open to Work ●"].map((label,i,arr)=>(
               <span key={label} style={{display:"inline-flex",alignItems:"center"}}>
                 <span style={{fontFamily:"'Outfit',sans-serif",fontSize:12,fontWeight:i===3?700:i===0?600:400,letterSpacing:.6,color:i===3?T.primary:i===0?T.textDim:T.gray,padding:"2px 14px",whiteSpace:"nowrap"}}>{label}</span>
@@ -582,26 +684,23 @@ export default function Portfolio(){
           </div>
 
           {/* Description */}
-          <p style={{fontFamily:"'Outfit',sans-serif",fontSize:16,lineHeight:1.95,color:T.gray,maxWidth:520,marginBottom:44,opacity:loaded?1:0,transform:loaded?"translateY(0)":"translateY(16px)",transition:"opacity .9s .5s,transform .9s cubic-bezier(.16,1,.3,1) .5s"}}>
+          <p className="hero-desc" style={{fontFamily:"'Outfit',sans-serif",fontSize:"clamp(14px,1.8vw,16px)",lineHeight:1.95,color:T.gray,maxWidth:520,marginBottom:44,opacity:loaded?1:0,transform:loaded?"translateY(0)":"translateY(16px)",transition:"opacity .9s .5s,transform .9s cubic-bezier(.16,1,.3,1) .5s",padding:"0 4px"}}>
             B.Tech graduate specializing in real-time web &amp; mobile apps. From GPS fleet dashboards to EV battery monitors — I build production-grade software that ships and scales.
           </p>
 
           {/* CTA Buttons */}
-          <div style={{display:"flex",gap:14,flexWrap:"wrap",justifyContent:"center",marginBottom:42,opacity:loaded?1:0,transform:loaded?"translateY(0)":"translateY(16px)",transition:"opacity .9s .56s,transform .9s cubic-bezier(.16,1,.3,1) .56s"}}>
-            {/* Primary — filled olive */}
+          <div className="hero-cta-group" style={{display:"flex",gap:10,flexWrap:"wrap",justifyContent:"center",marginBottom:42,opacity:loaded?1:0,transform:loaded?"translateY(0)":"translateY(16px)",transition:"opacity .9s .56s,transform .9s cubic-bezier(.16,1,.3,1) .56s",width:"100%"}}>
             <button onClick={()=>go("Experience")} className="cta-a" data-c="View"
-              style={{background:T.primary,border:`1.5px solid ${T.primary}`,color:"#fff",padding:"15px 42px",borderRadius:50,fontFamily:"'Outfit',sans-serif",fontSize:15,fontWeight:700,cursor:"none",position:"relative",zIndex:0,letterSpacing:.5,boxShadow:`0 6px 28px ${T.primary}44,0 2px 8px ${T.primary}22`}}>
+              style={{background:T.primary,border:`1.5px solid ${T.primary}`,color:"#fff",padding:"11px 28px",borderRadius:50,fontFamily:"'Outfit',sans-serif",fontSize:14,fontWeight:700,cursor:"none",position:"relative",zIndex:0,letterSpacing:.5,boxShadow:`0 6px 28px ${T.primary}44,0 2px 8px ${T.primary}22`,whiteSpace:"nowrap",flexShrink:0}}>
               View My Work →
             </button>
-            {/* Secondary — glassmorphism */}
             <a href="mailto:aakalya603@gmail.com" className="cta-b" data-c="Email"
-              style={{background:"rgba(245,245,242,0.55)",backdropFilter:"blur(16px)",border:`1px solid ${T.border}`,color:T.grayHi,padding:"15px 42px",borderRadius:50,fontFamily:"'Outfit',sans-serif",fontSize:15,fontWeight:500,cursor:"none",textDecoration:"none",display:"inline-flex",alignItems:"center",letterSpacing:.3,boxShadow:`inset 0 1px 0 rgba(255,255,255,0.7),0 2px 12px rgba(0,0,0,0.06)`}}>
+              style={{background:"rgba(245,245,242,0.55)",backdropFilter:"blur(16px)",border:`1px solid ${T.border}`,color:T.grayHi,padding:"11px 28px",borderRadius:50,fontFamily:"'Outfit',sans-serif",fontSize:14,fontWeight:500,cursor:"none",textDecoration:"none",display:"inline-flex",alignItems:"center",justifyContent:"center",letterSpacing:.3,boxShadow:`inset 0 1px 0 rgba(255,255,255,0.7),0 2px 12px rgba(0,0,0,0.06)`,whiteSpace:"nowrap",flexShrink:0}}>
               Let's Connect
             </a>
-            {/* Resume — ghost */}
             <button onClick={downloadResume} className="cta-dl" data-c="Resume"
-              style={{background:"transparent",border:`1px solid ${T.border}`,color:T.gray,padding:"15px 36px",borderRadius:50,fontFamily:"'Outfit',sans-serif",fontSize:15,fontWeight:500,cursor:"none",display:"inline-flex",alignItems:"center",gap:9,letterSpacing:.3,position:"relative",zIndex:0,overflow:"hidden",backdropFilter:"blur(10px)",boxShadow:`inset 0 1px 0 rgba(255,255,255,0.5)`}}>
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" style={{flexShrink:0,transition:"transform .35s cubic-bezier(.16,1,.3,1)"}}>
+              style={{background:"transparent",border:`1px solid ${T.border}`,color:T.gray,padding:"11px 24px",borderRadius:50,fontFamily:"'Outfit',sans-serif",fontSize:14,fontWeight:500,cursor:"none",display:"inline-flex",alignItems:"center",justifyContent:"center",gap:8,letterSpacing:.3,position:"relative",zIndex:0,overflow:"hidden",backdropFilter:"blur(10px)",boxShadow:`inset 0 1px 0 rgba(255,255,255,0.5)`,whiteSpace:"nowrap",flexShrink:0}}>
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" style={{flexShrink:0}}>
                 <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
                 <polyline points="7 10 12 15 17 10"/>
                 <line x1="12" y1="15" x2="12" y2="3"/>
@@ -611,12 +710,12 @@ export default function Portfolio(){
           </div>
 
           {/* Social */}
-          <div style={{display:"flex",alignItems:"center",justifyContent:"center",gap:14,marginBottom:56,opacity:loaded?1:0,transform:loaded?"translateY(0)":"translateY(12px)",transition:"opacity .9s .62s,transform .9s cubic-bezier(.16,1,.3,1) .62s"}}>
+          <div className="hero-social" style={{display:"flex",alignItems:"center",justifyContent:"center",gap:14,marginBottom:56,opacity:loaded?1:0,transform:loaded?"translateY(0)":"translateY(12px)",transition:"opacity .9s .62s,transform .9s cubic-bezier(.16,1,.3,1) .62s",flexWrap:"wrap"}}>
             <span style={{fontFamily:"'Outfit',sans-serif",fontSize:11,color:T.gray,letterSpacing:2.5,textTransform:"uppercase"}}>Find me on</span>
             <div style={{width:24,height:1,background:T.border}}/>
             {[["GH","https://github.com"],["LI","https://linkedin.com"],["HR","https://hackerrank.com"]].map(([l,h])=>(
               <a key={l} href={h} target="_blank" rel="noopener" className="soc-link" data-c={l}
-                style={{width:40,height:40,borderRadius:10,border:`1px solid ${T.border}`,display:"flex",alignItems:"center",justifyContent:"center",fontFamily:"'Outfit',sans-serif",fontSize:11,color:T.gray,fontWeight:700,textDecoration:"none",cursor:"none",position:"relative",zIndex:0,background:"rgba(245,245,242,0.55)",backdropFilter:"blur(10px)",boxShadow:`inset 0 1px 0 rgba(255,255,255,0.6)`}}>
+                style={{width:40,height:40,borderRadius:10,border:`1px solid ${T.border}`,display:"flex",alignItems:"center",justifyContent:"center",fontFamily:"'Outfit',sans-serif",fontSize:11,color:T.gray,fontWeight:700,textDecoration:"none",cursor:"none",position:"relative",zIndex:0,background:"rgba(245,245,242,0.55)",backdropFilter:"blur(10px)",boxShadow:`inset 0 1px 0 rgba(255,255,255,0.6)`,flexShrink:0}}>
                 {l}
               </a>
             ))}
@@ -636,7 +735,7 @@ export default function Portfolio(){
         </div>
 
         {/* Scroll indicator */}
-        <div style={{position:"absolute",bottom:36,left:"50%",transform:"translateX(-50%)",display:"flex",flexDirection:"column",alignItems:"center",gap:10,zIndex:2,opacity:loaded?1:0,transition:"opacity 1s 1.1s"}}>
+        <div className="scroll-indicator" style={{position:"absolute",bottom:36,left:"50%",transform:"translateX(-50%)",display:"flex",flexDirection:"column",alignItems:"center",gap:10,zIndex:2,opacity:loaded?1:0,transition:"opacity 1s 1.1s"}}>
           <div style={{width:26,height:42,borderRadius:13,border:`1.5px solid ${T.border}`,display:"flex",justifyContent:"center",paddingTop:6,background:"rgba(245,245,242,0.4)",backdropFilter:"blur(8px)",boxShadow:`inset 0 1px 0 rgba(255,255,255,0.5)`}}>
             <div style={{width:3,height:8,borderRadius:2,background:T.primary,animation:"floatY 1.8s ease-in-out infinite",boxShadow:`0 0 8px ${T.primary}`}}/>
           </div>
@@ -649,33 +748,39 @@ export default function Portfolio(){
         <div style={{position:"absolute",top:"5%",right:"0%",width:400,height:400,borderRadius:"50%",background:`radial-gradient(circle,${T.primary}08,transparent 70%)`,filter:"blur(80px)",pointerEvents:"none"}}/>
         <div style={{position:"absolute",bottom:"10%",left:"-8%",width:300,height:300,borderRadius:"50%",background:`radial-gradient(circle,${T.primary}06,transparent 70%)`,filter:"blur(60px)",pointerEvents:"none"}}/>
         <SecHead tag="About Me" title={<>The Person Behind<br/>The Code</>} sub="A full stack developer who turns complex ideas into clean, scalable software."/>
-        <div style={{display:"grid",gridTemplateColumns:"repeat(12,1fr)",gridTemplateRows:"auto",gap:14}}>
-          <Reveal d={.04} style={{gridColumn:"span 7"}}>
-            <div style={{background:`linear-gradient(145deg,${T.bg1} 0%,${T.bg2} 100%)`,border:`1px solid ${T.border}`,borderRadius:22,padding:"38px 38px",height:"100%",position:"relative",overflow:"hidden",minHeight:240}}>
+
+        {/* About grid — uses flex on mobile, grid on desktop via CSS classes */}
+        <div className="about-grid-inner" style={{display:"grid",gridTemplateColumns:"repeat(12,1fr)",gap:14}}>
+
+          {/* Card 1 — Bio (spans 7 cols on desktop, full on mobile) */}
+          <Reveal d={.04} style={{gridColumn:"span 7"}} className="about-col-7">
+            <div style={{background:`linear-gradient(145deg,${T.bg1} 0%,${T.bg2} 100%)`,border:`1px solid ${T.border}`,borderRadius:22,padding:"32px 28px",height:"100%",position:"relative",overflow:"hidden",minHeight:220}}>
               <div style={{position:"absolute",top:0,left:0,right:0,height:2,background:`linear-gradient(90deg,transparent,${T.primary}66,transparent)`}}/>
               <div style={{position:"absolute",inset:0,background:`radial-gradient(ellipse at 80% 20%,${T.primary}07,transparent 60%)`,pointerEvents:"none"}}/>
-              <div style={{display:"flex",alignItems:"center",gap:14,marginBottom:24}}>
-                <div style={{width:52,height:52,borderRadius:14,background:`${T.primary}15`,border:`1.5px solid ${T.primary}44`,display:"flex",alignItems:"center",justifyContent:"center",fontSize:24,flexShrink:0,boxShadow:`0 0 20px ${T.primary}22`,animation:"floatY 5s ease-in-out infinite"}}>👩‍💻</div>
-                <div>
-                  <div style={{fontFamily:"'Clash Display',sans-serif",fontSize:22,fontWeight:700,color:T.text,letterSpacing:-.4,lineHeight:1}}>Akalya A.</div>
+              <div style={{display:"flex",alignItems:"center",gap:14,marginBottom:20,flexWrap:"wrap"}}>
+                <div style={{width:48,height:48,borderRadius:14,background:`${T.primary}15`,border:`1.5px solid ${T.primary}44`,display:"flex",alignItems:"center",justifyContent:"center",fontSize:22,flexShrink:0,boxShadow:`0 0 20px ${T.primary}22`,animation:"floatY 5s ease-in-out infinite"}}>👩‍💻</div>
+                <div style={{flex:1,minWidth:0}}>
+                  <div style={{fontFamily:"'Clash Display',sans-serif",fontSize:"clamp(17px,2.5vw,22px)",fontWeight:700,color:T.text,letterSpacing:-.4,lineHeight:1}}>Akalya A.</div>
                   <div style={{fontFamily:"'Outfit',sans-serif",fontSize:12,color:T.primary,fontWeight:600,letterSpacing:1.5,textTransform:"uppercase",marginTop:4}}>Full Stack Developer</div>
                 </div>
-                <div style={{marginLeft:"auto",display:"flex",alignItems:"center",gap:6,background:`${T.primary}0c`,border:`1px solid ${T.primary}28`,borderRadius:100,padding:"5px 14px"}}>
+                <div style={{display:"flex",alignItems:"center",gap:6,background:`${T.primary}0c`,border:`1px solid ${T.primary}28`,borderRadius:100,padding:"5px 12px",flexShrink:0}}>
                   <div style={{width:6,height:6,borderRadius:"50%",background:T.primary,animation:"pulse 2s infinite",boxShadow:`0 0 8px ${T.primary}`}}/>
-                  <span style={{fontFamily:"'Outfit',sans-serif",fontSize:11,color:T.primary,fontWeight:600}}>Open to Work</span>
+                  <span style={{fontFamily:"'Outfit',sans-serif",fontSize:11,color:T.primary,fontWeight:600,whiteSpace:"nowrap"}}>Open to Work</span>
                 </div>
               </div>
-              <p className="about-p" style={{fontFamily:"'Outfit',sans-serif",fontSize:14.5,lineHeight:1.9,color:T.gray,marginBottom:16}}>B.Tech graduate in Information Technology (7.75 CGPA) from KGiSL Institute of Technology. Currently building production systems at <span style={{color:T.primary,fontWeight:600}}>Outdid Unified Private Limited</span> — used by real clients every day.</p>
-              <p className="about-p" style={{fontFamily:"'Outfit',sans-serif",fontSize:14.5,lineHeight:1.9,color:T.gray}}>From enterprise fleet dashboards to EV battery monitors and Flutter mobile apps — I live at the intersection of <span style={{color:T.primary,fontWeight:600}}>performance, clean code, and great UX</span>.</p>
+              <p className="about-p" style={{fontFamily:"'Outfit',sans-serif",fontSize:14,lineHeight:1.9,color:T.gray,marginBottom:14}}>B.Tech graduate in Information Technology (7.75 CGPA) from KGiSL Institute of Technology. Currently building production systems at <span style={{color:T.primary,fontWeight:600}}>Outdid Unified Private Limited</span> — used by real clients every day.</p>
+              <p className="about-p" style={{fontFamily:"'Outfit',sans-serif",fontSize:14,lineHeight:1.9,color:T.gray}}>From enterprise fleet dashboards to EV battery monitors and Flutter mobile apps — I live at the intersection of <span style={{color:T.primary,fontWeight:600}}>performance, clean code, and great UX</span>.</p>
             </div>
           </Reveal>
-          <Reveal d={.08} style={{gridColumn:"span 5"}}>
-            <div style={{background:`linear-gradient(145deg,${T.primary}12,${T.primary}06)`,border:`1.5px solid ${T.primary}33`,borderRadius:22,padding:"38px 34px",height:"100%",position:"relative",overflow:"hidden",minHeight:240,display:"flex",flexDirection:"column",justifyContent:"space-between"}}>
+
+          {/* Card 2 — CGPA (spans 5 cols on desktop) */}
+          <Reveal d={.08} style={{gridColumn:"span 5"}} className="about-col-5">
+            <div style={{background:`linear-gradient(145deg,${T.primary}12,${T.primary}06)`,border:`1.5px solid ${T.primary}33`,borderRadius:22,padding:"32px 28px",height:"100%",position:"relative",overflow:"hidden",minHeight:200,display:"flex",flexDirection:"column",justifyContent:"space-between"}}>
               <div style={{position:"absolute",top:0,left:0,right:0,height:2,background:`linear-gradient(90deg,transparent,${T.primary},transparent)`}}/>
               <div style={{position:"absolute",bottom:-30,right:-30,width:160,height:160,borderRadius:"50%",background:`${T.primary}08`,border:`1px solid ${T.primary}15`}}/>
               <div>
-                <div style={{fontFamily:"'Outfit',sans-serif",fontSize:10,color:T.primary,letterSpacing:3,textTransform:"uppercase",fontWeight:700,marginBottom:12}}>Academic Score</div>
-                <div style={{fontFamily:"'Clash Display',sans-serif",fontSize:72,fontWeight:900,color:T.primary,lineHeight:.9,letterSpacing:-3,textShadow:`0 0 60px ${T.primary}44`}}>7.75</div>
+                <div style={{fontFamily:"'Outfit',sans-serif",fontSize:10,color:T.primary,letterSpacing:3,textTransform:"uppercase",fontWeight:700,marginBottom:10}}>Academic Score</div>
+                <div className="cgpa-num" style={{fontFamily:"'Clash Display',sans-serif",fontSize:"clamp(54px,8vw,72px)",fontWeight:900,color:T.primary,lineHeight:.9,letterSpacing:-3,textShadow:`0 0 60px ${T.primary}44`}}>7.75</div>
                 <div style={{fontFamily:"'Outfit',sans-serif",fontSize:12,color:T.gray,letterSpacing:3,textTransform:"uppercase",marginTop:10}}>CGPA</div>
               </div>
               <div>
@@ -684,44 +789,50 @@ export default function Portfolio(){
               </div>
             </div>
           </Reveal>
-          <Reveal d={.12} style={{gridColumn:"span 5"}}>
-            <div style={{background:T.bg1,border:`1px solid ${T.border}`,borderRadius:22,padding:"30px 28px",height:"100%",position:"relative",overflow:"hidden"}}>
-              <div style={{fontFamily:"'Outfit',sans-serif",fontSize:10,color:T.primary,letterSpacing:3,textTransform:"uppercase",fontWeight:700,marginBottom:20}}>Contact Details</div>
-              <div style={{display:"flex",flexDirection:"column",gap:16}}>
+
+          {/* Card 3 — Contact details (spans 5 cols on desktop) */}
+          <Reveal d={.12} style={{gridColumn:"span 5"}} className="about-col-5">
+            <div style={{background:T.bg1,border:`1px solid ${T.border}`,borderRadius:22,padding:"26px 24px",height:"100%",position:"relative",overflow:"hidden"}}>
+              <div style={{fontFamily:"'Outfit',sans-serif",fontSize:10,color:T.primary,letterSpacing:3,textTransform:"uppercase",fontWeight:700,marginBottom:18}}>Contact Details</div>
+              <div className="contact-details-grid" style={{display:"flex",flexDirection:"column",gap:12}}>
                 {[["📧","aakalya603@gmail.com"],["📍","Coimbatore, Tamil Nadu"]].map(([ic,v])=>(
                   <div key={v} className="info-card" style={{display:"flex",alignItems:"center",gap:12,padding:"12px 14px",background:T.bg,border:`1px solid ${T.border}`,borderRadius:12}}>
                     <span style={{fontSize:18,flexShrink:0}}>{ic}</span>
-                    <span style={{fontFamily:"'Outfit',sans-serif",fontSize:13,color:T.text,fontWeight:600}}>{v}</span>
+                    <span style={{fontFamily:"'Outfit',sans-serif",fontSize:13,color:T.text,fontWeight:600,wordBreak:"break-all"}}>{v}</span>
                   </div>
                 ))}
               </div>
             </div>
           </Reveal>
-          <Reveal d={.14} style={{gridColumn:"span 7"}}>
-            <div style={{background:T.bg1,border:`1px solid ${T.border}`,borderRadius:22,padding:"30px 34px",height:"100%",position:"relative",overflow:"hidden"}}>
-              <div style={{fontFamily:"'Outfit',sans-serif",fontSize:10,color:T.primary,letterSpacing:3,textTransform:"uppercase",fontWeight:700,marginBottom:20}}>Education & Credentials</div>
-              <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:12}}>
+
+          {/* Card 4 — Education creds (spans 7 cols on desktop) */}
+          <Reveal d={.14} style={{gridColumn:"span 7"}} className="about-col-7">
+            <div style={{background:T.bg1,border:`1px solid ${T.border}`,borderRadius:22,padding:"26px 28px",height:"100%",position:"relative",overflow:"hidden"}}>
+              <div style={{fontFamily:"'Outfit',sans-serif",fontSize:10,color:T.primary,letterSpacing:3,textTransform:"uppercase",fontWeight:700,marginBottom:18}}>Education & Credentials</div>
+              <div className="edu-cred-grid" style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:10}}>
                 {[["🎓","Degree","B.Tech — Information Technology"],["🏫","Institute","KGiSL Institute of Technology"],["📅","Duration","June 2021 – May 2025"],["⭐","Score","7.75 CGPA"]].map(([ic,label,val])=>(
-                  <div key={label} className="info-card" style={{background:T.bg,border:`1px solid ${T.border}`,borderRadius:12,padding:"14px 16px",display:"flex",gap:12,alignItems:"flex-start"}}>
-                    <div style={{width:38,height:38,borderRadius:10,background:`${T.primary}0e`,border:`1px solid ${T.primary}22`,display:"flex",alignItems:"center",justifyContent:"center",fontSize:17,flexShrink:0}}>{ic}</div>
-                    <div>
+                  <div key={label} className="info-card" style={{background:T.bg,border:`1px solid ${T.border}`,borderRadius:12,padding:"14px 14px",display:"flex",gap:10,alignItems:"flex-start"}}>
+                    <div style={{width:34,height:34,borderRadius:10,background:`${T.primary}0e`,border:`1px solid ${T.primary}22`,display:"flex",alignItems:"center",justifyContent:"center",fontSize:16,flexShrink:0}}>{ic}</div>
+                    <div style={{minWidth:0}}>
                       <div style={{fontFamily:"'Outfit',sans-serif",fontSize:10,color:T.gray,letterSpacing:1.5,textTransform:"uppercase",fontWeight:600,marginBottom:3}}>{label}</div>
-                      <div style={{fontFamily:"'Outfit',sans-serif",fontSize:13,color:T.text,fontWeight:700,lineHeight:1.35}}>{val}</div>
+                      <div style={{fontFamily:"'Outfit',sans-serif",fontSize:12,color:T.text,fontWeight:700,lineHeight:1.35}}>{val}</div>
                     </div>
                   </div>
                 ))}
               </div>
             </div>
           </Reveal>
-          <Reveal d={.2} style={{gridColumn:"span 12"}}>
-            <div style={{background:T.bg1,border:`1px solid ${T.border}`,borderRadius:22,padding:"34px 34px",position:"relative",overflow:"hidden"}}>
+
+          {/* Card 5 — What I do (full width) */}
+          <Reveal d={.2} style={{gridColumn:"span 12"}} className="about-col-12">
+            <div style={{background:T.bg1,border:`1px solid ${T.border}`,borderRadius:22,padding:"30px 28px",position:"relative",overflow:"hidden"}}>
               <div style={{position:"absolute",top:0,left:0,right:0,height:1,background:`linear-gradient(90deg,transparent,${T.primary}33,transparent)`}}/>
-              <div style={{fontFamily:"'Outfit',sans-serif",fontSize:10,color:T.primary,letterSpacing:3,textTransform:"uppercase",fontWeight:700,marginBottom:22}}>What I Do</div>
-              <div style={{display:"grid",gridTemplateColumns:"repeat(auto-fit,minmax(200px,1fr))",gap:12}}>
+              <div style={{fontFamily:"'Outfit',sans-serif",fontSize:10,color:T.primary,letterSpacing:3,textTransform:"uppercase",fontWeight:700,marginBottom:20}}>What I Do</div>
+              <div className="what-grid" style={{display:"grid",gridTemplateColumns:"repeat(auto-fit,minmax(180px,1fr))",gap:12}}>
                 {WHAT_I_DO.map((w)=>(
-                  <div key={w.title} className="what-card" style={{background:T.bg,border:`1px solid ${T.border}`,borderRadius:14,padding:"22px 20px",position:"relative",overflow:"hidden"}}>
+                  <div key={w.title} className="what-card" style={{background:T.bg,border:`1px solid ${T.border}`,borderRadius:14,padding:"20px 18px",position:"relative",overflow:"hidden"}}>
                     <div style={{position:"absolute",top:0,left:0,right:0,height:2,background:`linear-gradient(90deg,transparent,${T.primary}44,transparent)`}}/>
-                    <div className="wi" style={{fontSize:28,marginBottom:12,display:"inline-block",transition:"transform .35s cubic-bezier(.16,1,.3,1)"}}>{w.icon}</div>
+                    <div className="wi" style={{fontSize:26,marginBottom:10,display:"inline-block",transition:"transform .35s cubic-bezier(.16,1,.3,1)"}}>{w.icon}</div>
                     <h4 style={{fontFamily:"'Clash Display',sans-serif",fontSize:14,fontWeight:700,color:T.text,marginBottom:7,letterSpacing:-.2}}>{w.title}</h4>
                     <p style={{fontFamily:"'Outfit',sans-serif",fontSize:12,color:T.gray,lineHeight:1.75}}>{w.desc}</p>
                   </div>
@@ -735,22 +846,22 @@ export default function Portfolio(){
       {/* ══ SKILLS ══ */}
       <section id="skills" style={{padding:"120px 8%",background:T.bg1,position:"relative",zIndex:2}} className="section-pad">
         <SecHead tag="Technical Skills" title="My Tech Stack" sub="Technologies and tools I work with to build reliable, scalable, and user-focused software."/>
-        <div style={{display:"grid",gridTemplateColumns:"repeat(auto-fit,minmax(320px,1fr))",gap:18}}>
+        <div className="skills-grid" style={{display:"grid",gridTemplateColumns:"repeat(auto-fit,minmax(280px,1fr))",gap:16}}>
           {SKILLS.map((s,i)=>(
             <Reveal key={s.cat} d={i*.07}>
               <TiltCard style={{height:"100%"}}>
-                <div className="skill-card" style={{background:`linear-gradient(135deg,${T.bg} 0%,${T.bg2} 100%)`,border:`1px solid ${T.border}`,borderRadius:14,padding:"28px 26px",height:"100%",boxShadow:`inset 0 1px 0 ${T.border}`,position:"relative"}}>
+                <div className="skill-card" style={{background:`linear-gradient(135deg,${T.bg} 0%,${T.bg2} 100%)`,border:`1px solid ${T.border}`,borderRadius:14,padding:"26px 22px",height:"100%",boxShadow:`inset 0 1px 0 ${T.border}`,position:"relative"}}>
                   <div style={{position:"absolute",top:0,left:0,right:0,height:1,background:`linear-gradient(90deg,transparent,${s.color}66,transparent)`}}/>
                   <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:8}}>
-                    <div style={{display:"flex",alignItems:"center",gap:12}}>
-                      <div style={{width:34,height:34,borderRadius:8,background:`${s.color}12`,border:`1px solid ${s.color}25`,display:"flex",alignItems:"center",justifyContent:"center",fontSize:15,color:s.color}}>{s.icon}</div>
+                    <div style={{display:"flex",alignItems:"center",gap:10}}>
+                      <div style={{width:32,height:32,borderRadius:8,background:`${s.color}12`,border:`1px solid ${s.color}25`,display:"flex",alignItems:"center",justifyContent:"center",fontSize:14,color:s.color,flexShrink:0}}>{s.icon}</div>
                       <span style={{fontFamily:"'Outfit',sans-serif",fontSize:13,color:T.white,fontWeight:700,letterSpacing:.3}}>{s.cat}</span>
                     </div>
-                    <span style={{fontFamily:"'Clash Display',sans-serif",fontSize:14,color:s.color,fontWeight:700}}>{s.pct}%</span>
+                    <span style={{fontFamily:"'Clash Display',sans-serif",fontSize:14,color:s.color,fontWeight:700,flexShrink:0}}>{s.pct}%</span>
                   </div>
                   <SkillBar pct={s.pct} color={s.color} delay={i*.08}/>
-                  <div style={{display:"flex",flexWrap:"wrap",gap:7,marginTop:18}}>
-                    {s.items.map(it=>(<span key={it} className="skill-chip" style={{fontFamily:"'Outfit',sans-serif",fontSize:11,color:T.gray,background:T.bg2,border:`1px solid ${T.border}`,padding:"5px 12px",borderRadius:6,fontWeight:500}}>{it}</span>))}
+                  <div style={{display:"flex",flexWrap:"wrap",gap:7,marginTop:16}}>
+                    {s.items.map(it=>(<span key={it} className="skill-chip" style={{fontFamily:"'Outfit',sans-serif",fontSize:11,color:T.gray,background:T.bg2,border:`1px solid ${T.border}`,padding:"4px 11px",borderRadius:6,fontWeight:500}}>{it}</span>))}
                   </div>
                 </div>
               </TiltCard>
@@ -762,7 +873,7 @@ export default function Portfolio(){
       {/* ══ EXPERIENCE ══ */}
       <section id="experience" style={{padding:"120px 8%",position:"relative",zIndex:2}} className="section-pad">
         <SecHead tag="Work Experience" title="Career Journey" sub="Hands-on experience building production systems across web, mobile, and IoT domains."/>
-        <div style={{display:"flex",flexDirection:"column",gap:14}}>
+        <div style={{display:"flex",flexDirection:"column",gap:12}}>
           {EXPERIENCES.map((exp,i)=><ExpCard key={exp.company} exp={exp} idx={i}/>)}
         </div>
       </section>
@@ -770,24 +881,24 @@ export default function Portfolio(){
       {/* ══ PROJECTS ══ */}
       <section id="projects" style={{padding:"120px 8%",background:T.bg1,position:"relative",zIndex:2}} className="section-pad">
         <SecHead tag="Projects" title="Selected Work" sub="A curated set of projects spanning full-stack web, mobile, and data-intensive dashboards."/>
-        <div style={{display:"grid",gridTemplateColumns:"repeat(auto-fit,minmax(330px,1fr))",gap:16}}>
+        <div className="proj-grid" style={{display:"grid",gridTemplateColumns:"repeat(auto-fit,minmax(300px,1fr))",gap:14}}>
           {PROJECTS.map((p,i)=>(
             <Reveal key={p.name} d={i*.07}>
               <div className="proj-card" data-c="View"
                 onMouseMove={e=>{const r=e.currentTarget.getBoundingClientRect();e.currentTarget.style.setProperty("--mx",((e.clientX-r.left)/r.width*100)+"%");e.currentTarget.style.setProperty("--my",((e.clientY-r.top)/r.height*100)+"%");}}
-                style={{background:p.highlight?`linear-gradient(135deg,${T.bg2},${T.bg})`:T.bg,border:`1px solid ${p.highlight?T.primary+"44":T.border}`,borderRadius:14,padding:"30px 26px",cursor:"none",height:"100%",display:"flex",flexDirection:"column",position:"relative",boxShadow:p.highlight?`0 0 50px ${T.primary}0e,inset 0 1px 0 ${T.primary}15`:"none"}}>
+                style={{background:p.highlight?`linear-gradient(135deg,${T.bg2},${T.bg})`:T.bg,border:`1px solid ${p.highlight?T.primary+"44":T.border}`,borderRadius:14,padding:"26px 22px",cursor:"none",height:"100%",display:"flex",flexDirection:"column",position:"relative",boxShadow:p.highlight?`0 0 50px ${T.primary}0e,inset 0 1px 0 ${T.primary}15`:"none"}}>
                 {p.highlight&&<div style={{position:"absolute",top:0,left:0,right:0,height:1,background:`linear-gradient(90deg,transparent,${T.primary},transparent)`,boxShadow:`0 0 20px ${T.primary}88`}}/>}
-                <div style={{display:"flex",justifyContent:"space-between",alignItems:"flex-start",marginBottom:20}}>
-                  <span className="proj-num" style={{fontFamily:"'Clash Display',sans-serif",fontSize:12,color:T.border,fontWeight:700,letterSpacing:2,transition:"color .3s"}}>{p.num}</span>
-                  <div style={{display:"flex",gap:6}}>
-                    <span style={{fontFamily:"'Outfit',sans-serif",fontSize:10,color:p.status==="Production"?T.primary:T.gray,background:p.status==="Production"?`${T.primary}14`:T.bg2,border:`1px solid ${p.status==="Production"?T.primary+"30":T.border}`,padding:"3px 10px",borderRadius:100,fontWeight:600,letterSpacing:.8}}>{p.status}</span>
-                    <span style={{fontFamily:"'Outfit',sans-serif",fontSize:10,color:T.gray,background:T.bg2,border:`1px solid ${T.border}`,padding:"3px 10px",borderRadius:100}}>{p.type}</span>
+                <div style={{display:"flex",justifyContent:"space-between",alignItems:"flex-start",marginBottom:16,gap:8}}>
+                  <span className="proj-num" style={{fontFamily:"'Clash Display',sans-serif",fontSize:12,color:T.border,fontWeight:700,letterSpacing:2,transition:"color .3s",flexShrink:0}}>{p.num}</span>
+                  <div style={{display:"flex",gap:6,flexWrap:"wrap",justifyContent:"flex-end"}}>
+                    <span style={{fontFamily:"'Outfit',sans-serif",fontSize:10,color:p.status==="Production"?T.primary:T.gray,background:p.status==="Production"?`${T.primary}14`:T.bg2,border:`1px solid ${p.status==="Production"?T.primary+"30":T.border}`,padding:"3px 10px",borderRadius:100,fontWeight:600,letterSpacing:.8,whiteSpace:"nowrap"}}>{p.status}</span>
+                    <span style={{fontFamily:"'Outfit',sans-serif",fontSize:10,color:T.gray,background:T.bg2,border:`1px solid ${T.border}`,padding:"3px 10px",borderRadius:100,whiteSpace:"nowrap"}}>{p.type}</span>
                   </div>
                 </div>
-                <h3 className="proj-title" style={{fontFamily:"'Clash Display',sans-serif",fontSize:19,fontWeight:700,color:T.white,marginBottom:10,letterSpacing:-.3,transition:"color .3s"}}>{p.name}</h3>
-                <p style={{fontFamily:"'Outfit',sans-serif",fontSize:13.5,color:T.gray,lineHeight:1.8,marginBottom:22,flex:1}}>{p.desc}</p>
+                <h3 className="proj-title" style={{fontFamily:"'Clash Display',sans-serif",fontSize:"clamp(15px,2vw,19px)",fontWeight:700,color:T.white,marginBottom:10,letterSpacing:-.3,transition:"color .3s"}}>{p.name}</h3>
+                <p style={{fontFamily:"'Outfit',sans-serif",fontSize:13,color:T.gray,lineHeight:1.8,marginBottom:20,flex:1}}>{p.desc}</p>
                 <div style={{display:"flex",flexWrap:"wrap",gap:6}}>
-                  {p.tech.map(t=>(<span key={t} className="tech-tag" style={{fontFamily:"'Outfit',sans-serif",fontSize:10,color:T.primary,background:`${T.primary}0a`,border:`1px solid ${T.primary}1e`,padding:"3px 10px",borderRadius:6,fontWeight:500}}>{t}</span>))}
+                  {p.tech.map(t=>(<span key={t} className="tech-tag" style={{fontFamily:"'Outfit',sans-serif",fontSize:10,color:T.primary,background:`${T.primary}0a`,border:`1px solid ${T.primary}1e`,padding:"3px 9px",borderRadius:6,fontWeight:500}}>{t}</span>))}
                 </div>
               </div>
             </Reveal>
@@ -798,19 +909,19 @@ export default function Portfolio(){
       {/* ══ ACHIEVEMENTS ══ */}
       <section id="achievements" style={{padding:"120px 8%",position:"relative",zIndex:2}} className="section-pad">
         <SecHead tag="Recognition" title="Achievements & Education" sub="Milestones that shaped my technical foundation and competitive edge."/>
-        <div style={{display:"grid",gridTemplateColumns:"repeat(auto-fit,minmax(280px,1fr))",gap:16,marginBottom:24}}>
+        <div className="ach-grid" style={{display:"grid",gridTemplateColumns:"repeat(auto-fit,minmax(260px,1fr))",gap:14,marginBottom:20}}>
           {ACHIEVEMENTS.map((a,i)=>(
             <Reveal key={a.title} d={i*.09}>
               <TiltCard style={{height:"100%"}}>
-                <div className="ach-card" style={{"--ac":a.color,background:T.bg1,border:`1px solid ${T.border}`,borderRadius:14,padding:"30px 26px",height:"100%",position:"relative",overflow:"hidden"}}>
+                <div className="ach-card" style={{"--ac":a.color,background:T.bg1,border:`1px solid ${T.border}`,borderRadius:14,padding:"28px 22px",height:"100%",position:"relative",overflow:"hidden"}}>
                   <div style={{position:"absolute",top:0,left:0,right:0,height:1,background:`linear-gradient(90deg,transparent,${a.color}55,transparent)`}}/>
-                  <div className="ach-icon" style={{fontSize:34,marginBottom:18,display:"inline-block",animation:`floatY ${3.5+i*.4}s ease-in-out ${i*.3}s infinite`}}>{a.icon}</div>
-                  <div style={{display:"flex",alignItems:"center",gap:8,marginBottom:10}}>
+                  <div className="ach-icon" style={{fontSize:32,marginBottom:16,display:"inline-block",animation:`floatY ${3.5+i*.4}s ease-in-out ${i*.3}s infinite`}}>{a.icon}</div>
+                  <div style={{display:"flex",alignItems:"center",gap:8,marginBottom:10,flexWrap:"wrap"}}>
                     <span style={{fontFamily:"'Outfit',sans-serif",fontSize:11,color:a.color,fontWeight:700,letterSpacing:1.5}}>{a.org}</span>
-                    <span style={{width:3,height:3,borderRadius:"50%",background:T.border,display:"inline-block"}}/>
+                    <span style={{width:3,height:3,borderRadius:"50%",background:T.border,display:"inline-block",flexShrink:0}}/>
                     <span style={{fontFamily:"'Outfit',sans-serif",fontSize:11,color:T.gray}}>{a.year}</span>
                   </div>
-                  <h3 style={{fontFamily:"'Clash Display',sans-serif",fontSize:17,fontWeight:700,color:T.white,marginBottom:10,letterSpacing:-.3}}>{a.title}</h3>
+                  <h3 style={{fontFamily:"'Clash Display',sans-serif",fontSize:"clamp(14px,2vw,17px)",fontWeight:700,color:T.white,marginBottom:10,letterSpacing:-.3}}>{a.title}</h3>
                   <p style={{fontFamily:"'Outfit',sans-serif",fontSize:13,color:T.gray,lineHeight:1.78}}>{a.desc}</p>
                 </div>
               </TiltCard>
@@ -818,18 +929,18 @@ export default function Portfolio(){
           ))}
         </div>
         <Reveal d={.3}>
-          <div className="edu-card" style={{background:`linear-gradient(135deg,${T.bg2},${T.bg1})`,border:`1px solid ${T.border}`,borderRadius:16,padding:"36px 40px",display:"flex",justifyContent:"space-between",alignItems:"center",flexWrap:"wrap",gap:28,position:"relative",overflow:"hidden",animation:"borderPulse 4s ease-in-out infinite"}}>
+          <div className="edu-card" style={{background:`linear-gradient(135deg,${T.bg2},${T.bg1})`,border:`1px solid ${T.border}`,borderRadius:16,padding:"28px 24px",display:"flex",justifyContent:"space-between",alignItems:"center",flexWrap:"wrap",gap:20,position:"relative",overflow:"hidden",animation:"borderPulse 4s ease-in-out infinite"}}>
             <div style={{position:"absolute",top:0,left:0,right:0,height:1,background:`linear-gradient(90deg,transparent,${T.primary}44,transparent)`}}/>
-            <div style={{display:"flex",gap:22,alignItems:"center",flexWrap:"wrap"}}>
-              <div style={{width:56,height:56,borderRadius:14,background:`${T.primary}12`,border:`1px solid ${T.primary}30`,display:"flex",alignItems:"center",justifyContent:"center",fontSize:26,boxShadow:`0 0 24px ${T.primary}22`,animation:"floatY 5s ease-in-out infinite"}}>🎓</div>
-              <div>
-                <div style={{fontFamily:"'Outfit',sans-serif",fontSize:10,color:T.primary,fontWeight:700,letterSpacing:3,textTransform:"uppercase",marginBottom:8}}>Education</div>
-                <h3 style={{fontFamily:"'Clash Display',sans-serif",fontSize:22,fontWeight:700,color:T.white,marginBottom:5,letterSpacing:-.5}}>Bachelor of Technology — Information Technology</h3>
-                <p style={{fontFamily:"'Outfit',sans-serif",fontSize:14,color:T.gray}}>KGiSL Institute of Technology, Coimbatore · June 2021 – May 2025</p>
+            <div style={{display:"flex",gap:18,alignItems:"center",flexWrap:"wrap",flex:1,minWidth:0}}>
+              <div style={{width:52,height:52,borderRadius:14,background:`${T.primary}12`,border:`1px solid ${T.primary}30`,display:"flex",alignItems:"center",justifyContent:"center",fontSize:24,boxShadow:`0 0 24px ${T.primary}22`,animation:"floatY 5s ease-in-out infinite",flexShrink:0}}>🎓</div>
+              <div style={{minWidth:0}}>
+                <div style={{fontFamily:"'Outfit',sans-serif",fontSize:10,color:T.primary,fontWeight:700,letterSpacing:3,textTransform:"uppercase",marginBottom:6}}>Education</div>
+                <h3 style={{fontFamily:"'Clash Display',sans-serif",fontSize:"clamp(15px,2.5vw,22px)",fontWeight:700,color:T.white,marginBottom:5,letterSpacing:-.5}}>Bachelor of Technology — Information Technology</h3>
+                <p style={{fontFamily:"'Outfit',sans-serif",fontSize:13,color:T.gray}}>KGiSL Institute of Technology, Coimbatore · June 2021 – May 2025</p>
               </div>
             </div>
             <div style={{textAlign:"center",flexShrink:0}}>
-              <div style={{fontFamily:"'Clash Display',sans-serif",fontSize:58,fontWeight:900,color:T.primary,lineHeight:1,letterSpacing:-3,textShadow:`0 0 40px ${T.primary}77`}}>7.75</div>
+              <div style={{fontFamily:"'Clash Display',sans-serif",fontSize:"clamp(44px,6vw,58px)",fontWeight:900,color:T.primary,lineHeight:1,letterSpacing:-3,textShadow:`0 0 40px ${T.primary}77`}}>7.75</div>
               <div style={{fontFamily:"'Outfit',sans-serif",fontSize:10,color:T.gray,letterSpacing:4,textTransform:"uppercase",marginTop:6}}>CGPA</div>
             </div>
           </div>
@@ -838,42 +949,42 @@ export default function Portfolio(){
 
       {/* ══ CONTACT ══ */}
       <section id="contact" style={{padding:"120px 8% 140px",background:T.bg1,position:"relative",zIndex:2,overflow:"hidden"}} className="section-pad">
-        <div style={{position:"absolute",top:"50%",left:"50%",transform:"translate(-50%,-50%)",width:600,height:600,borderRadius:"50%",background:`radial-gradient(circle,${T.primary}05,transparent 70%)`,pointerEvents:"none"}}/>
+        <div style={{position:"absolute",top:"50%",left:"50%",transform:"translate(-50%,-50%)",width:"min(600px,90vw)",height:"min(600px,90vw)",borderRadius:"50%",background:`radial-gradient(circle,${T.primary}05,transparent 70%)`,pointerEvents:"none"}}/>
         <div style={{maxWidth:760,margin:"0 auto",position:"relative"}}>
           <Reveal>
-            <div style={{textAlign:"center",marginBottom:72}}>
-              <div style={{display:"inline-flex",alignItems:"center",gap:8,background:`${T.primary}0e`,border:`1px solid ${T.primary}28`,borderRadius:100,padding:"6px 20px",marginBottom:28}}>
+            <div style={{textAlign:"center",marginBottom:60}}>
+              <div style={{display:"inline-flex",alignItems:"center",gap:8,background:`${T.primary}0e`,border:`1px solid ${T.primary}28`,borderRadius:100,padding:"6px 20px",marginBottom:24}}>
                 <div style={{width:6,height:6,borderRadius:"50%",background:T.primary,boxShadow:`0 0 8px ${T.primary}`,animation:"pulse 2s infinite"}}/>
                 <span style={{fontFamily:"'Outfit',sans-serif",fontSize:12,color:T.primary,fontWeight:600,letterSpacing:1.5}}>Open to Work</span>
               </div>
-              <h2 style={{fontFamily:"'Clash Display',sans-serif",fontSize:"clamp(44px,7vw,82px)",fontWeight:700,lineHeight:1.0,letterSpacing:-2.5,marginBottom:20}}>
+              <h2 style={{fontFamily:"'Clash Display',sans-serif",fontSize:"clamp(36px,7vw,82px)",fontWeight:700,lineHeight:1.0,letterSpacing:-2.5,marginBottom:20}}>
                 Let's Build<br/>
                 <span className="grad-text">Something Great</span>
               </h2>
-              <p style={{fontFamily:"'Outfit',sans-serif",fontSize:16,color:T.gray,lineHeight:1.9,maxWidth:520,margin:"0 auto"}}>Looking for full-time roles, internship extensions, and exciting freelance projects. I respond within 24 hours.</p>
+              <p style={{fontFamily:"'Outfit',sans-serif",fontSize:"clamp(14px,1.8vw,16px)",color:T.gray,lineHeight:1.9,maxWidth:520,margin:"0 auto"}}>Looking for full-time roles, internship extensions, and exciting freelance projects. I respond within 24 hours.</p>
             </div>
           </Reveal>
           <Reveal d={.15}>
-            <div style={{display:"grid",gridTemplateColumns:"repeat(auto-fit,minmax(210px,1fr))",gap:14,marginBottom:44}}>
+            <div className="contact-grid" style={{display:"grid",gridTemplateColumns:"repeat(auto-fit,minmax(200px,1fr))",gap:12,marginBottom:36}}>
               {[["📧","Email","aakalya603@gmail.com","mailto:aakalya603@gmail.com"],["📍","Location","Coimbatore, Tamil Nadu",null]].map(([ic,l,v,href])=>(
-                <div key={l} className="contact-card" style={{background:T.bg,border:`1px solid ${T.border}`,borderRadius:12,padding:"22px 22px",position:"relative",overflow:"hidden"}}>
+                <div key={l} className="contact-card" style={{background:T.bg,border:`1px solid ${T.border}`,borderRadius:12,padding:"20px 20px",position:"relative",overflow:"hidden"}}>
                   <div style={{position:"absolute",top:0,left:0,right:0,height:1,background:`linear-gradient(90deg,transparent,${T.primary}33,transparent)`}}/>
                   <div style={{fontFamily:"'Outfit',sans-serif",fontSize:11,color:T.gray,marginBottom:8,letterSpacing:1}}>{ic} {l}</div>
-                  {href?<a href={href} data-c={l} style={{fontFamily:"'Outfit',sans-serif",fontSize:14,color:T.primary,fontWeight:700,textDecoration:"none",cursor:"none"}}>{v}</a>:<span style={{fontFamily:"'Outfit',sans-serif",fontSize:14,color:T.textDim,fontWeight:700}}>{v}</span>}
+                  {href?<a href={href} data-c={l} style={{fontFamily:"'Outfit',sans-serif",fontSize:14,color:T.primary,fontWeight:700,textDecoration:"none",cursor:"none",wordBreak:"break-all"}}>{v}</a>:<span style={{fontFamily:"'Outfit',sans-serif",fontSize:14,color:T.textDim,fontWeight:700}}>{v}</span>}
                 </div>
               ))}
             </div>
           </Reveal>
           <Reveal d={.25}>
-            <div style={{display:"flex",justifyContent:"center",gap:12,flexWrap:"wrap"}}>
+            <div className="contact-socials" style={{display:"flex",justifyContent:"center",gap:10,flexWrap:"wrap"}}>
               {[["GitHub","https://github.com"],["LinkedIn","https://linkedin.com"],["HackerRank","https://hackerrank.com"]].map(([label,href])=>(
                 <a key={label} href={href} target="_blank" rel="noopener" className="soc-link" data-c={label}
-                  style={{fontFamily:"'Outfit',sans-serif",fontSize:12,color:T.gray,border:`1px solid ${T.border}`,padding:"12px 28px",borderRadius:10,textDecoration:"none",cursor:"none",fontWeight:600,letterSpacing:.5,background:T.bg,position:"relative",zIndex:0}}>
+                  style={{fontFamily:"'Outfit',sans-serif",fontSize:12,color:T.gray,border:`1px solid ${T.border}`,padding:"12px 24px",borderRadius:10,textDecoration:"none",cursor:"none",fontWeight:600,letterSpacing:.5,background:T.bg,position:"relative",zIndex:0,textAlign:"center"}}>
                   {label}
                 </a>
               ))}
               <a href="mailto:aakalya603@gmail.com" className="cta-a" data-c="Hire"
-                style={{fontFamily:"'Outfit',sans-serif",fontSize:12,color:"#fff",background:T.primary,border:`1.5px solid ${T.primary}`,padding:"12px 34px",borderRadius:10,textDecoration:"none",cursor:"none",fontWeight:700,letterSpacing:.5,position:"relative",zIndex:0,boxShadow:`0 4px 20px ${T.primary}44`}}>
+                style={{fontFamily:"'Outfit',sans-serif",fontSize:12,color:"#fff",background:T.primary,border:`1.5px solid ${T.primary}`,padding:"12px 30px",borderRadius:10,textDecoration:"none",cursor:"none",fontWeight:700,letterSpacing:.5,position:"relative",zIndex:0,boxShadow:`0 4px 20px ${T.primary}44`,textAlign:"center"}}>
                 Hire Me →
               </a>
             </div>
@@ -882,15 +993,15 @@ export default function Portfolio(){
       </section>
 
       {/* ══ FOOTER ══ */}
-      <div className="footer-row" style={{borderTop:`1px solid ${T.border}`,padding:"22px 8%",display:"flex",justifyContent:"space-between",alignItems:"center",flexWrap:"wrap",gap:10,zIndex:2,position:"relative",background:T.bg}}>
+      <div className="footer-row" style={{borderTop:`1px solid ${T.border}`,padding:"20px 6%",display:"flex",justifyContent:"space-between",alignItems:"center",flexWrap:"wrap",gap:10,zIndex:2,position:"relative",background:T.bg}}>
         <div style={{display:"flex",alignItems:"center",gap:10}}>
-          <div className="footer-logo" style={{width:26,height:26,borderRadius:"50%",background:`${T.primary}12`,border:`1px solid ${T.primary}44`,display:"flex",alignItems:"center",justifyContent:"center",boxShadow:`0 0 10px ${T.primary}22`}}>
+          <div className="footer-logo" style={{width:26,height:26,borderRadius:"50%",background:`${T.primary}12`,border:`1px solid ${T.primary}44`,display:"flex",alignItems:"center",justifyContent:"center",boxShadow:`0 0 10px ${T.primary}22`,flexShrink:0}}>
             <span style={{fontFamily:"'Clash Display',sans-serif",fontSize:11,color:T.primary,fontWeight:700}}>A</span>
           </div>
           <span style={{fontFamily:"'Outfit',sans-serif",fontSize:13,color:T.gray}}>Akalya A — Full Stack Developer</span>
         </div>
         <div style={{display:"flex",alignItems:"center",gap:6}}>
-          <div style={{width:5,height:5,borderRadius:"50%",background:T.primary,boxShadow:`0 0 6px ${T.primary}`,animation:"pulse 2s infinite"}}/>
+          <div style={{width:5,height:5,borderRadius:"50%",background:T.primary,boxShadow:`0 0 6px ${T.primary}`,animation:"pulse 2s infinite",flexShrink:0}}/>
           <span style={{fontFamily:"'Outfit',sans-serif",fontSize:12,color:T.gray}}>Built with React · {new Date().getFullYear()}</span>
         </div>
       </div>
