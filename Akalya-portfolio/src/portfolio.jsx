@@ -324,7 +324,7 @@ export default function Portfolio(){
     const favicon=document.querySelector("link[rel='icon']")||document.createElement("link");
     favicon.rel="icon";
     favicon.type="image/svg+xml";
-    favicon.href=`data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%237C7D52'/><text x='50' y='72' text-anchor='middle' font-family='Georgia,serif' font-size='62' font-weight='700' fill='%23F5F5F2'>A</text></svg>`;
+    favicon.href=`data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><defs><linearGradient id='g' x1='0%25' y1='0%25' x2='100%25' y2='100%25'><stop offset='0%25' stop-color='%237C7D52'/><stop offset='100%25' stop-color='%235E5F3E'/></linearGradient></defs><rect width='100' height='100' rx='20' fill='%23F5F5F2'/><rect x='3' y='3' width='94' height='94' rx='18' fill='none' stroke='%237C7D52' stroke-width='2'/><text x='50' y='68' text-anchor='middle' font-family='Georgia,serif' font-size='58' font-weight='900' fill='url(%23g)'>A</text><line x1='28' y1='78' x2='72' y2='78' stroke='%237C7D52' stroke-width='3' stroke-linecap='round'/></svg>`;
     document.head.appendChild(favicon);
   },[]);
 
