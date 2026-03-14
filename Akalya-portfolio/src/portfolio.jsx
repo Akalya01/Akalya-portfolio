@@ -318,7 +318,7 @@ export default function Portfolio(){
   };
 
   return(
-    <div style={{background:T.bg,color:T.text,fontFamily:"'Outfit',sans-serif",minHeight:"100vh",cursor:"none",overflowX:"hidden"}}>
+    <div style={{background:T.bg,color:T.text,fontFamily:"'Outfit',sans-serif",minHeight:"100vh",width:"100%",cursor:"none",overflowX:"hidden"}}>
       <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet"/>
       <Cursor/>
       <ParticleBg/>
@@ -337,6 +337,7 @@ export default function Portfolio(){
       <style>{`
         @import url('https://api.fontshare.com/v2/css?f[]=clash-display@700,600,500&display=swap');
         *{box-sizing:border-box;margin:0;padding:0}
+        html,body,#root{background:${T.bg}!important;width:100%;min-height:100vh}
         html{scroll-behavior:smooth}
         ::selection{background:${T.primary}35;color:${T.primary}}
         ::-webkit-scrollbar{width:4px}
