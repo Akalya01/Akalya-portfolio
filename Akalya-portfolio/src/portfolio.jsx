@@ -292,6 +292,172 @@ function TiltCard({children,style={},className=""}){
   return(<div ref={ref} onMouseMove={onMove} onMouseLeave={onLeave} className={className} style={{transition:"transform .5s cubic-bezier(.16,1,.3,1)",willChange:"transform",...style}}>{children}</div>);
 }
 
+/* ══════════════ FIELD — top-level so it never remounts on ContactForm re-render ══════════════ */
+function Field({ id, label, type="text", rows, placeholder, value, onChange, onBlur, touched, errors }){
+  const [focused, setFocused] = useState(false);
+  const hasErr = touched[id] && errors[id];
+
+  const inputBase = {
+    width:"100%", fontFamily:"'Outfit',sans-serif", fontSize:14, color:T.text,
+    background:T.bg, border:`1px solid ${T.border}`, borderRadius:10,
+    padding:"13px 16px", outline:"none",
+    transition:"border-color .25s,box-shadow .25s",
+    cursor:"text", appearance:"none", WebkitAppearance:"none", resize:"none",
+  };
+  const inputFocus = { borderColor:`${T.primary}88`, boxShadow:`0 0 0 3px ${T.primary}18` };
+  const inputErr   = { borderColor:"#E07070", boxShadow:"0 0 0 3px rgba(224,112,112,0.12)" };
+
+  const style = { ...inputBase, ...(focused ? inputFocus : {}), ...(hasErr ? inputErr : {}) };
+  const common = {
+    id, name:id, value, onChange,
+    onBlur: (e) => { setFocused(false); onBlur(e); },
+    onFocus: () => setFocused(true),
+    placeholder, style,
+  };
+
+  return (
+    <div style={{ display:"flex", flexDirection:"column", gap:6 }}>
+      <label htmlFor={id} style={{ fontFamily:"'Outfit',sans-serif", fontSize:12, fontWeight:600, color:T.grayHi, letterSpacing:.5 }}>
+        {label} <span style={{ color:T.primary }}>*</span>
+      </label>
+      {rows
+        ? <textarea {...common} rows={rows} style={{ ...style, lineHeight:1.7 }} />
+        : <input    {...common} type={type} />
+      }
+      {hasErr && (
+        <span style={{ fontFamily:"'Outfit',sans-serif", fontSize:11, color:"#C05050", display:"flex", alignItems:"center", gap:4 }}>
+          <span style={{ fontSize:10 }}>⚠</span>{errors[id]}
+        </span>
+      )}
+    </div>
+  );
+}
+
+/* ══════════════ CONTACT FORM ══════════════ */
+const EMAILJS_SERVICE_ID  = "service_v82d6nl";
+const EMAILJS_TEMPLATE_ID = "template_5v21vkb";
+const EMAILJS_PUBLIC_KEY  = "V1ZV_nJ48V-uddoBH";
+
+function ContactForm(){
+  const [form,setForm]=useState({name:"",email:"",subject:"",message:""});
+  const [status,setStatus]=useState("idle");
+  const [touched,setTouched]=useState({});
+
+  useEffect(()=>{
+    if(window.emailjs) return;
+    const s=document.createElement("script");
+    s.src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js";
+    s.onload=()=>window.emailjs.init(EMAILJS_PUBLIC_KEY);
+    document.head.appendChild(s);
+  },[]);
+
+  const handleChange = useCallback(e => {
+    const { name, value } = e.target;
+    setForm(f => ({ ...f, [name]: value }));
+  }, []);
+
+  const handleBlur = useCallback(e => {
+    setTouched(t => ({ ...t, [e.target.name]: true }));
+  }, []);
+
+  const validate = () => {
+    const errs={};
+    if(!form.name.trim())          errs.name="Name is required";
+    if(!form.email.trim())         errs.email="Email is required";
+    else if(!/\S+@\S+\.\S+/.test(form.email)) errs.email="Enter a valid email";
+    if(!form.subject.trim())       errs.subject="Subject is required";
+    if(!form.message.trim())       errs.message="Message is required";
+    else if(form.message.trim().length<10) errs.message="Message must be at least 10 characters";
+    return errs;
+  };
+  const errors  = validate();
+  const isValid = Object.keys(errors).length === 0;
+
+  const handleSubmit = async () => {
+    setTouched({name:true,email:true,subject:true,message:true});
+    if(!isValid) return;
+    if(!window.emailjs){ setStatus("error"); return; }
+    setStatus("sending");
+    try {
+      await window.emailjs.send(
+        "service_v82d6nl",
+        "template_5v21vkb",
+        { name:form.name, email:form.email, message:form.message },
+        "V1ZV_nJ48V-uddoBH"
+      );
+      setStatus("success");
+      setForm({name:"",email:"",subject:"",message:""});
+      setTouched({});
+      setTimeout(()=>setStatus("idle"),5000);
+    } catch(err){
+      console.error(err);
+      setStatus("error");
+      setTimeout(()=>setStatus("idle"),5000);
+    }
+  };
+
+  return(
+    <div style={{background:T.bg1,border:`1px solid ${T.border}`,borderRadius:18,padding:"32px 28px",position:"relative",overflow:"hidden"}}>
+      <div style={{position:"absolute",top:0,left:0,right:0,height:2,background:`linear-gradient(90deg,transparent,${T.primary}88,transparent)`}}/>
+      <div style={{marginBottom:24}}>
+        <div style={{fontFamily:"'Outfit',sans-serif",fontSize:11,color:T.primary,letterSpacing:4,textTransform:"uppercase",fontWeight:700,marginBottom:6}}>Send a Message</div>
+        <p style={{fontFamily:"'Outfit',sans-serif",fontSize:13,color:T.gray,lineHeight:1.7}}>Fill in the form below and I'll get back to you within 24 hours.</p>
+      </div>
+      <div style={{display:"flex",flexDirection:"column",gap:16}}>
+        <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:14}} className="form-row-2col">
+          <Field id="name"    label="Your Name"      placeholder="Akalya A"                            value={form.name}    onChange={handleChange} onBlur={handleBlur} touched={touched} errors={errors}/>
+          <Field id="email"   label="Email Address"  type="email" placeholder="you@example.com"        value={form.email}   onChange={handleChange} onBlur={handleBlur} touched={touched} errors={errors}/>
+        </div>
+        <Field id="subject"   label="Subject"        placeholder="Project enquiry / Job opportunity…"  value={form.subject} onChange={handleChange} onBlur={handleBlur} touched={touched} errors={errors}/>
+        <Field id="message"   label="Message"        rows={5} placeholder="Hi Akalya, I'd love to discuss…" value={form.message} onChange={handleChange} onBlur={handleBlur} touched={touched} errors={errors}/>
+        <button
+          data-c="Send"
+          onClick={handleSubmit}
+          disabled={status==="sending"}
+          style={{
+            marginTop:4,padding:"13px 32px",borderRadius:50,border:"none",
+            background:status==="success"?"#4A7C5E":status==="error"?"#9C4A4A":T.primary,
+            color:"#fff",fontFamily:"'Outfit',sans-serif",fontSize:14,fontWeight:700,
+            letterSpacing:.5,cursor:status==="sending"?"not-allowed":"none",
+            display:"flex",alignItems:"center",justifyContent:"center",gap:10,
+            boxShadow:`0 6px 28px ${T.primary}44`,
+            transition:"background .4s,transform .3s,box-shadow .3s",
+            transform:status==="sending"?"scale(0.98)":"scale(1)",
+            opacity:status==="sending"?.75:1,
+            alignSelf:"flex-start",
+          }}
+          className="send-btn"
+        >
+          {status==="sending"&&(<span style={{width:14,height:14,border:"2px solid rgba(255,255,255,0.3)",borderTopColor:"#fff",borderRadius:"50%",display:"inline-block",animation:"spinRing .7s linear infinite"}}/>)}
+          {status==="idle"    && <>Send Message <span style={{fontSize:16}}>→</span></>}
+          {status==="sending" && "Sending…"}
+          {status==="success" && <>✓ Message Sent!</>}
+          {status==="error"   && <>✕ Failed — Retry</>}
+        </button>
+        {status==="success"&&(
+          <div style={{background:"rgba(74,124,94,0.1)",border:"1px solid rgba(74,124,94,0.3)",borderRadius:10,padding:"12px 16px",fontFamily:"'Outfit',sans-serif",fontSize:13,color:"#4A7C5E",display:"flex",alignItems:"center",gap:8}}>
+            <span style={{fontSize:16}}>✅</span>
+            Your message was sent successfully! I'll reply within 24 hours.
+          </div>
+        )}
+        {status==="error"&&(
+          <div style={{background:"rgba(156,74,74,0.1)",border:"1px solid rgba(156,74,74,0.3)",borderRadius:10,padding:"12px 16px",fontFamily:"'Outfit',sans-serif",fontSize:13,color:"#9C4A4A",display:"flex",alignItems:"center",gap:8}}>
+            <span style={{fontSize:16}}>❌</span>
+            Something went wrong. Please email directly at{" "}
+            <a href="mailto:aakalya603@gmail.com" style={{color:"#9C4A4A",fontWeight:700}}>aakalya603@gmail.com</a>
+          </div>
+        )}
+      </div>
+      {(EMAILJS_SERVICE_ID==="YOUR_SERVICE_ID")&&(
+        <div style={{marginTop:18,background:"rgba(124,125,82,0.08)",border:"1px dashed rgba(124,125,82,0.4)",borderRadius:10,padding:"12px 16px",fontFamily:"'Outfit',sans-serif",fontSize:12,color:T.gray,lineHeight:1.7}}>
+          ⚙️ <strong style={{color:T.primary}}>Setup required:</strong> Replace <code>YOUR_SERVICE_ID</code>, <code>YOUR_TEMPLATE_ID</code>, and <code>YOUR_PUBLIC_KEY</code> with your{" "}
+          <a href="https://www.emailjs.com" target="_blank" rel="noopener" style={{color:T.primary,fontWeight:600}}>EmailJS</a> credentials.
+        </div>
+      )}
+    </div>
+  );
+}
+
 /* ══════════════ MAIN PORTFOLIO ══════════════ */
 export default function Portfolio(){
   const [activeNav,setActiveNav]=useState("Home");
@@ -318,12 +484,9 @@ export default function Portfolio(){
   };
 
   useEffect(()=>{
-    // Set page title
     document.title="Akalya A — Full Stack Developer";
-    // Set favicon as inline SVG data URI
     const favicon=document.querySelector("link[rel='icon']")||document.createElement("link");
-    favicon.rel="icon";
-    favicon.type="image/svg+xml";
+    favicon.rel="icon";favicon.type="image/svg+xml";
     favicon.href=`data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><defs><linearGradient id='g' x1='0%25' y1='0%25' x2='100%25' y2='100%25'><stop offset='0%25' stop-color='%237C7D52'/><stop offset='100%25' stop-color='%235E5F3E'/></linearGradient></defs><rect width='100' height='100' rx='20' fill='%23F5F5F2'/><rect x='3' y='3' width='94' height='94' rx='18' fill='none' stroke='%237C7D52' stroke-width='2'/><text x='50' y='68' text-anchor='middle' font-family='Georgia,serif' font-size='58' font-weight='900' fill='url(%23g)'>A</text><line x1='28' y1='78' x2='72' y2='78' stroke='%237C7D52' stroke-width='3' stroke-linecap='round'/></svg>`;
     document.head.appendChild(favicon);
   },[]);
@@ -446,10 +609,9 @@ export default function Portfolio(){
         .footer-logo{transition:all .3s cubic-bezier(.16,1,.3,1)}
         .footer-logo:hover{transform:scale(1.15) rotate(10deg);box-shadow:0 0 18px ${T.primary}55!important}
         .footer-row{transition:border-color .3s}
-
-        /* ═══ RESPONSIVE BREAKPOINTS ═══ */
-
-        /* Large tablets and small desktops */
+        input,textarea{cursor:text!important;}
+        .send-btn:hover:not(:disabled){box-shadow:0 16px 56px ${T.primary}55!important;transform:translateY(-3px) scale(1.03)!important;filter:brightness(1.08)}
+        @media(max-width:600px){.form-row-2col{grid-template-columns:1fr!important}}
         @media(max-width:1024px){
           .about-grid-inner{grid-template-columns:1fr 1fr!important}
           .about-col-7{grid-column:span 1!important}
@@ -457,100 +619,48 @@ export default function Portfolio(){
           .about-col-12{grid-column:span 2!important}
           .edu-cred-grid{grid-template-columns:1fr 1fr!important}
         }
-
-        /* Tablets */
         @media(max-width:900px){
           .orbital-rings{display:none!important}
           .floating-tech{display:none!important}
           .section-pad{padding:80px 5%!important}
           .hero-section{padding-left:4%!important;padding-right:4%!important}
         }
-
-        /* Mobile */
         @media(max-width:768px){
           .deskNav,.status-badge{display:none!important}
           .mbBtn{display:flex!important}
           .orbital-rings{display:none!important}
           .floating-tech{display:none!important}
-
-          /* About section grid - full single column on mobile */
           .about-grid-inner{display:flex!important;flex-direction:column!important;gap:12px!important}
           .about-col-7,.about-col-5,.about-col-12{grid-column:unset!important;width:100%!important}
-
-          /* Contact details grid inside about */
           .contact-details-grid{grid-template-columns:1fr!important}
-
-          /* Education creds grid */
           .edu-cred-grid{grid-template-columns:1fr!important}
-
-          /* Stats row */
           .stats-row{flex-direction:column!important;gap:0!important;width:100%!important}
           .stat-cell{border-right:none!important;border-bottom:1px solid ${T.border}!important;padding-bottom:20px!important;padding-top:20px!important}
           .stat-cell:last-child{border-bottom:none!important}
           .counter-num{font-size:42px!important}
-
-          /* Section padding */
           .section-pad{padding:64px 4%!important}
           .hero-section{padding-top:120px!important;padding-bottom:60px!important;padding-left:4%!important;padding-right:4%!important}
-
-          /* Footer */
           .footer-row{flex-direction:column!important;gap:10px!important;align-items:flex-start!important}
-
-          /* Hero CTA group */
           .hero-cta-group{flex-direction:row!important;flex-wrap:wrap!important;justify-content:center!important;gap:8px!important}
           .hero-cta-group > *{flex:1 1 auto!important;max-width:calc(50% - 4px)!important;justify-content:center!important;text-align:center!important;display:flex!important;padding:10px 14px!important;font-size:13px!important;white-space:nowrap!important}
-
-          /* Hero stats */
           .hero-stats-wrap{flex-direction:column!important}
-
-          /* Social row */
           .hero-social{justify-content:center!important;flex-wrap:wrap!important}
-
-          /* Role capsule */
           .role-capsule{display:none!important}
-
-          /* What I do grid */
           .what-grid{grid-template-columns:1fr!important}
-
-          /* Achievements grid */
           .ach-grid{grid-template-columns:1fr!important}
-
-          /* Projects grid */
           .proj-grid{grid-template-columns:1fr!important}
-
-          /* Skills grid */
           .skills-grid{grid-template-columns:1fr!important}
-
-          /* Exp card padding */
           .exp-header{padding:20px 16px!important}
-
-          /* Contact grid */
           .contact-grid{grid-template-columns:1fr!important}
-
-          /* Contact social links */
           .contact-socials{flex-direction:column!important;width:100%!important}
           .contact-socials > *{width:100%!important;text-align:center!important;justify-content:center!important;display:flex!important}
-
-          /* Section heading */
           .sec-head-mb{margin-bottom:48px!important}
-
-          /* About CGPA card */
           .cgpa-num{font-size:58px!important}
-
-          /* Nav logo text */
           .logo-text{display:none!important}
-
-          /* Scroll indicator */
           .scroll-indicator{display:none!important}
-
-          /* Available badge */
           .avail-badge{margin-bottom:24px!important}
-
-          /* Hero description */
           .hero-desc{font-size:14px!important;margin-bottom:32px!important}
         }
-
-        /* Very small phones */
         @media(max-width:420px){
           .hero-section{padding-left:3%!important;padding-right:3%!important}
           .section-pad{padding:56px 3%!important}
@@ -560,15 +670,9 @@ export default function Portfolio(){
         }
       `}</style>
 
-      {/* ══ UPGRADED PREMIUM NAV ══ */}
+      {/* ══ NAV ══ */}
       <header style={{position:"fixed",top:0,left:0,right:0,zIndex:9000,padding:isMobile?"12px 4%":"16px 5%",pointerEvents:"none",display:"flex",alignItems:"center",justifyContent:"space-between"}}>
-        <div onClick={()=>go("Home")} data-c="" style={{
-          pointerEvents:"all",cursor:"none",display:"flex",alignItems:"center",gap:10,
-          background:"rgba(245,245,242,0.88)",backdropFilter:"blur(28px)",
-          border:`1px solid ${scrollY>40?T.primary+"44":T.border}`,borderRadius:50,padding:"7px 18px 7px 8px",
-          boxShadow:scrollY>40?`0 4px 28px rgba(0,0,0,0.12),0 0 0 1px ${T.primary}22`:`0 2px 16px rgba(0,0,0,0.07),inset 0 1px 0 rgba(255,255,255,0.8)`,
-          transition:"all .4s cubic-bezier(.16,1,.3,1)",
-        }}>
+        <div onClick={()=>go("Home")} data-c="" style={{pointerEvents:"all",cursor:"none",display:"flex",alignItems:"center",gap:10,background:"rgba(245,245,242,0.88)",backdropFilter:"blur(28px)",border:`1px solid ${scrollY>40?T.primary+"44":T.border}`,borderRadius:50,padding:"7px 18px 7px 8px",boxShadow:scrollY>40?`0 4px 28px rgba(0,0,0,0.12),0 0 0 1px ${T.primary}22`:`0 2px 16px rgba(0,0,0,0.07),inset 0 1px 0 rgba(255,255,255,0.8)`,transition:"all .4s cubic-bezier(.16,1,.3,1)"}}>
           <div style={{width:32,height:32,borderRadius:"50%",background:`${T.primary}18`,border:`1.5px solid ${T.primary}`,display:"flex",alignItems:"center",justifyContent:"center",boxShadow:`0 0 12px ${T.primary}66`,flexShrink:0,position:"relative"}}>
             <div style={{position:"absolute",inset:-3,borderRadius:"50%",border:`1px solid ${T.primary}22`,animation:"spinRing 8s linear infinite"}}/>
             <span style={{fontFamily:"'Clash Display',sans-serif",fontSize:13,color:T.primary,fontWeight:700}}>A</span>
@@ -579,13 +683,7 @@ export default function Portfolio(){
           </div>
         </div>
         {!isMobile&&(
-          <nav className="deskNav" style={{
-            pointerEvents:"all",display:"flex",alignItems:"center",gap:1,
-            background:"rgba(245,245,242,0.88)",backdropFilter:"blur(28px)",
-            border:`1px solid ${T.border}`,borderRadius:50,padding:"5px 6px",
-            boxShadow:`0 4px 28px rgba(0,0,0,0.09),inset 0 1px 0 rgba(255,255,255,0.7)${scrollY>40?`,0 0 0 1px ${T.primary}22`:""}`,
-            transition:"box-shadow .4s",
-          }}>
+          <nav className="deskNav" style={{pointerEvents:"all",display:"flex",alignItems:"center",gap:1,background:"rgba(245,245,242,0.88)",backdropFilter:"blur(28px)",border:`1px solid ${T.border}`,borderRadius:50,padding:"5px 6px",boxShadow:`0 4px 28px rgba(0,0,0,0.09),inset 0 1px 0 rgba(255,255,255,0.7)${scrollY>40?`,0 0 0 1px ${T.primary}22`:""}`,transition:"box-shadow .4s"}}>
             {NAV_ITEMS.map(n=>(
               <button key={n} onClick={()=>go(n)} className={`nav-pill ${activeNav===n?"active":""}`}
                 style={{background:"none",border:"none",fontFamily:"'Outfit',sans-serif",fontSize:15,fontWeight:activeNav===n?600:400,letterSpacing:.3,color:activeNav===n?T.text:T.gray,cursor:"none",padding:"7px 16px",borderRadius:50,transition:"color .2s",position:"relative",zIndex:0}}>
@@ -625,15 +723,11 @@ export default function Portfolio(){
         </div>
       )}
 
-      {/* ══════════════ PREMIUM HERO ══════════════ */}
+      {/* ══════════════ HERO ══════════════ */}
       <section id="home" className="hero-section" style={{minHeight:"100vh",display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",paddingTop:"130px",paddingBottom:"80px",paddingLeft:"6%",paddingRight:"6%",position:"relative",zIndex:1,textAlign:"center",overflow:"hidden"}}>
-
-        {/* Deep name glow */}
         <div style={{position:"absolute",top:"50%",left:"50%",transform:"translate(-50%,-58%)",width:"min(720px,90vw)",height:"min(520px,60vw)",borderRadius:"50%",background:`radial-gradient(ellipse at center,${T.primary}0e 0%,${T.primary}05 40%,transparent 70%)`,filter:"blur(70px)",pointerEvents:"none",zIndex:0}}/>
         <div style={{position:"absolute",top:"28%",left:"10%",width:280,height:280,borderRadius:"50%",background:`radial-gradient(circle,${T.primary}07,transparent 70%)`,filter:"blur(80px)",pointerEvents:"none",zIndex:0}}/>
         <div style={{position:"absolute",top:"38%",right:"8%",width:240,height:240,borderRadius:"50%",background:`radial-gradient(circle,${T.primary}06,transparent 70%)`,filter:"blur(70px)",pointerEvents:"none",zIndex:0}}/>
-
-        {/* Orbital rings */}
         <div className="orbital-rings" style={{position:"absolute",left:"50%",top:"50%",transform:"translate(-50%,-50%)",pointerEvents:"none",zIndex:0,animation:"floatY 7s ease-in-out infinite"}}>
           <div style={{position:"absolute",inset:-30,borderRadius:"50%",background:`conic-gradient(from 0deg,transparent 0%,${T.primary}15 25%,transparent 50%,${T.primary}08 75%,transparent 100%)`,animation:"rotateGlow 8s linear infinite",filter:"blur(8px)"}}/>
           <div style={{width:560,height:560,borderRadius:"50%",border:`1px solid ${T.border}`,position:"relative",animation:"spinRing 90s linear infinite"}}>
@@ -645,48 +739,25 @@ export default function Portfolio(){
           <div style={{position:"absolute",inset:155,borderRadius:"50%",border:`1px solid ${T.primary}07`}}/>
           <div style={{position:"absolute",inset:240,borderRadius:"50%",border:`1px dashed ${T.primary}12`,animation:"spinRing 30s linear infinite"}}/>
         </div>
-
-        {/* Floating tech micro-badges */}
-        {[
-          {label:"React.js",  top:"22%",left:"6%",  delay:"0s"},
-          {label:"Flutter",   top:"62%",left:"4%",  delay:"0.8s"},
-          {label:"Socket.io", top:"20%",right:"5%", delay:"0.4s"},
-          {label:"Next.js",   top:"66%",right:"6%", delay:"1.2s"},
-        ].map(({label,top,left,right,delay})=>(
+        {[{label:"React.js",top:"22%",left:"6%",delay:"0s"},{label:"Flutter",top:"62%",left:"4%",delay:"0.8s"},{label:"Socket.io",top:"20%",right:"5%",delay:"0.4s"},{label:"Next.js",top:"66%",right:"6%",delay:"1.2s"}].map(({label,top,left,right,delay})=>(
           <div key={label} className="floating-tech" style={{position:"absolute",top,left,right,fontFamily:"'Outfit',sans-serif",fontSize:11,color:T.primary,fontWeight:600,letterSpacing:.8,background:`${T.primary}0a`,border:`1px solid ${T.primary}22`,borderRadius:100,padding:"5px 14px",animation:`floatY 5s ease-in-out ${delay} infinite`,opacity:.6,zIndex:1,pointerEvents:"none",backdropFilter:"blur(8px)"}}>{label}</div>
         ))}
-
-        {/* Top rule */}
         <div style={{position:"absolute",top:"18%",left:"50%",transform:"translateX(-50%)",width:"min(500px,68%)",height:"1px",background:`linear-gradient(90deg,transparent,${T.primary}20,transparent)`,zIndex:1,pointerEvents:"none",opacity:loaded?1:0,transition:"opacity 1.2s .2s"}}/>
-
-        {/* ════ Hero content ════ */}
         <div style={{width:"100%",maxWidth:660,position:"relative",zIndex:2,display:"flex",flexDirection:"column",alignItems:"center"}}>
-
-          {/* Available badge */}
           <div className="ripple-badge avail-badge" style={{display:"inline-flex",alignItems:"center",gap:9,background:`${T.primary}0c`,border:`1px solid ${T.primary}28`,borderRadius:100,padding:"7px 22px",marginBottom:40,backdropFilter:"blur(12px)",opacity:loaded?1:0,transform:loaded?"translateY(0)":"translateY(20px)",transition:"opacity .8s .1s,transform .8s cubic-bezier(.16,1,.3,1) .1s"}}>
             <div style={{width:7,height:7,borderRadius:"50%",background:T.primary,boxShadow:`0 0 10px ${T.primary},0 0 18px ${T.primary}66`,animation:"pulse 2s ease-in-out infinite"}}/>
             <span style={{fontFamily:"'Outfit',sans-serif",fontSize:12,color:T.primary,fontWeight:600,letterSpacing:2}}>Available for Opportunities</span>
           </div>
-
-          {/* Greeting */}
           <p style={{fontFamily:"'Outfit',sans-serif",fontSize:"clamp(12px,1.6vw,17px)",fontWeight:300,color:T.gray,letterSpacing:5,textTransform:"uppercase",marginBottom:8,opacity:loaded?1:0,transform:loaded?"translateY(0)":"translateY(14px)",transition:"opacity .9s .18s,transform .9s cubic-bezier(.16,1,.3,1) .18s"}}>Hi, I'm</p>
-
-          {/* NAME */}
           <div style={{position:"relative",marginBottom:10,opacity:loaded?1:0,transform:loaded?"translateY(0)":"translateY(30px)",transition:"opacity .9s .25s,transform .9s cubic-bezier(.16,1,.3,1) .25s"}}>
             <div style={{position:"absolute",inset:"-30px -60px",borderRadius:"50%",background:`radial-gradient(ellipse,${T.primary}12,transparent 65%)`,filter:"blur(28px)",pointerEvents:"none",zIndex:0}}/>
             <h1 className="grad-text" style={{fontFamily:"'Clash Display',sans-serif",fontSize:"clamp(54px,11.5vw,134px)",fontWeight:700,lineHeight:.88,letterSpacing:-3.5,position:"relative",zIndex:1}}>Akalya. A</h1>
           </div>
-
-          {/* Thin accent line */}
           <div style={{width:72,height:1,background:`linear-gradient(90deg,transparent,${T.primary}88,transparent)`,marginBottom:22,opacity:loaded?1:0,transition:"opacity 1s .4s"}}/>
-
-          {/* Typewriter */}
           <div style={{display:"flex",alignItems:"center",justifyContent:"center",gap:10,marginBottom:20,minHeight:40,opacity:loaded?1:0,transform:loaded?"translateY(0)":"translateY(16px)",transition:"opacity .9s .38s,transform .9s cubic-bezier(.16,1,.3,1) .38s"}}>
             <span style={{fontFamily:"'Outfit',sans-serif",fontSize:"clamp(15px,2.2vw,24px)",color:T.textDim,fontWeight:300,letterSpacing:.4}}>{typed}</span>
             <span style={{display:"inline-block",width:2,height:"1em",background:T.primary,animation:"blink 1s step-end infinite",borderRadius:2,boxShadow:`0 0 10px ${T.primary}`}}/>
           </div>
-
-          {/* Premium role capsule */}
           <div className="role-capsule" style={{display:"inline-flex",alignItems:"center",gap:0,background:T.bg1,border:`1px solid ${T.border}`,borderRadius:100,padding:"9px 6px",marginBottom:30,backdropFilter:"blur(16px)",boxShadow:`0 2px 20px rgba(0,0,0,0.06),inset 0 1px 0 rgba(255,255,255,0.6)`,opacity:loaded?1:0,transform:loaded?"translateY(0)":"translateY(14px)",transition:"opacity .9s .44s,transform .9s cubic-bezier(.16,1,.3,1) .44s",flexWrap:"wrap",justifyContent:"center"}}>
             {["Full Stack Developer","React • Flutter","Real-time Systems","Open to Work ●"].map((label,i,arr)=>(
               <span key={label} style={{display:"inline-flex",alignItems:"center"}}>
@@ -695,13 +766,9 @@ export default function Portfolio(){
               </span>
             ))}
           </div>
-
-          {/* Description */}
           <p className="hero-desc" style={{fontFamily:"'Outfit',sans-serif",fontSize:"clamp(14px,1.8vw,16px)",lineHeight:1.95,color:T.gray,maxWidth:520,marginBottom:44,opacity:loaded?1:0,transform:loaded?"translateY(0)":"translateY(16px)",transition:"opacity .9s .5s,transform .9s cubic-bezier(.16,1,.3,1) .5s",padding:"0 4px"}}>
             B.Tech graduate specializing in real-time web &amp; mobile apps. From GPS fleet dashboards to EV battery monitors — I build production-grade software that ships and scales.
           </p>
-
-          {/* CTA Buttons */}
           <div className="hero-cta-group" style={{display:"flex",gap:10,flexWrap:"wrap",justifyContent:"center",marginBottom:42,opacity:loaded?1:0,transform:loaded?"translateY(0)":"translateY(16px)",transition:"opacity .9s .56s,transform .9s cubic-bezier(.16,1,.3,1) .56s",width:"100%"}}>
             <button onClick={()=>go("Experience")} className="cta-a" data-c="View"
               style={{background:T.primary,border:`1.5px solid ${T.primary}`,color:"#fff",padding:"11px 28px",borderRadius:50,fontFamily:"'Outfit',sans-serif",fontSize:14,fontWeight:700,cursor:"none",position:"relative",zIndex:0,letterSpacing:.5,boxShadow:`0 6px 28px ${T.primary}44,0 2px 8px ${T.primary}22`,whiteSpace:"nowrap",flexShrink:0}}>
@@ -721,8 +788,6 @@ export default function Portfolio(){
               Resume
             </button>
           </div>
-
-          {/* Social */}
           <div className="hero-social" style={{display:"flex",alignItems:"center",justifyContent:"center",gap:14,marginBottom:56,opacity:loaded?1:0,transform:loaded?"translateY(0)":"translateY(12px)",transition:"opacity .9s .62s,transform .9s cubic-bezier(.16,1,.3,1) .62s",flexWrap:"wrap"}}>
             <span style={{fontFamily:"'Outfit',sans-serif",fontSize:11,color:T.gray,letterSpacing:2.5,textTransform:"uppercase"}}>Find me on</span>
             <div style={{width:24,height:1,background:T.border}}/>
@@ -733,11 +798,7 @@ export default function Portfolio(){
               </a>
             ))}
           </div>
-
-          {/* Bottom rule */}
           <div style={{width:"100%",height:1,background:`linear-gradient(90deg,transparent,${T.border},transparent)`,marginBottom:38,opacity:loaded?0.7:0,transition:"opacity 1s .7s"}}/>
-
-          {/* Stats */}
           <div className="stats-row" style={{display:"flex",gap:0,width:"100%",justifyContent:"center",opacity:loaded?1:0,transform:loaded?"translateY(0)":"translateY(12px)",transition:"opacity .9s .72s,transform .9s cubic-bezier(.16,1,.3,1) .72s"}}>
             {[{to:3,suffix:"+",label:"Internships",color:T.primary},{to:9,suffix:"+",label:"Projects",color:T.white},{to:7,suffix:".75",label:"CGPA × 100",color:T.primary}].map((s,i)=>(
               <div key={s.label} className="stat-cell" style={{flex:1,textAlign:"center",padding:"0 24px",borderRight:i<2?`1px solid ${T.border}`:"none"}}>
@@ -746,8 +807,6 @@ export default function Portfolio(){
             ))}
           </div>
         </div>
-
-        {/* Scroll indicator */}
         <div className="scroll-indicator" style={{position:"absolute",bottom:36,left:"50%",transform:"translateX(-50%)",display:"flex",flexDirection:"column",alignItems:"center",gap:10,zIndex:2,opacity:loaded?1:0,transition:"opacity 1s 1.1s"}}>
           <div style={{width:26,height:42,borderRadius:13,border:`1.5px solid ${T.border}`,display:"flex",justifyContent:"center",paddingTop:6,background:"rgba(245,245,242,0.4)",backdropFilter:"blur(8px)",boxShadow:`inset 0 1px 0 rgba(255,255,255,0.5)`}}>
             <div style={{width:3,height:8,borderRadius:2,background:T.primary,animation:"floatY 1.8s ease-in-out infinite",boxShadow:`0 0 8px ${T.primary}`}}/>
@@ -761,11 +820,7 @@ export default function Portfolio(){
         <div style={{position:"absolute",top:"5%",right:"0%",width:400,height:400,borderRadius:"50%",background:`radial-gradient(circle,${T.primary}08,transparent 70%)`,filter:"blur(80px)",pointerEvents:"none"}}/>
         <div style={{position:"absolute",bottom:"10%",left:"-8%",width:300,height:300,borderRadius:"50%",background:`radial-gradient(circle,${T.primary}06,transparent 70%)`,filter:"blur(60px)",pointerEvents:"none"}}/>
         <SecHead tag="About Me" title={<>The Person Behind<br/>The Code</>} sub="A full stack developer who turns complex ideas into clean, scalable software."/>
-
-        {/* About grid — uses flex on mobile, grid on desktop via CSS classes */}
         <div className="about-grid-inner" style={{display:"grid",gridTemplateColumns:"repeat(12,1fr)",gap:14}}>
-
-          {/* Card 1 — Bio (spans 7 cols on desktop, full on mobile) */}
           <Reveal d={.04} style={{gridColumn:"span 7"}} className="about-col-7">
             <div style={{background:`linear-gradient(145deg,${T.bg1} 0%,${T.bg2} 100%)`,border:`1px solid ${T.border}`,borderRadius:22,padding:"32px 28px",height:"100%",position:"relative",overflow:"hidden",minHeight:220}}>
               <div style={{position:"absolute",top:0,left:0,right:0,height:2,background:`linear-gradient(90deg,transparent,${T.primary}66,transparent)`}}/>
@@ -785,8 +840,6 @@ export default function Portfolio(){
               <p className="about-p" style={{fontFamily:"'Outfit',sans-serif",fontSize:14,lineHeight:1.9,color:T.gray}}>From enterprise fleet dashboards to EV battery monitors and Flutter mobile apps — I live at the intersection of <span style={{color:T.primary,fontWeight:600}}>performance, clean code, and great UX</span>.</p>
             </div>
           </Reveal>
-
-          {/* Card 2 — CGPA (spans 5 cols on desktop) */}
           <Reveal d={.08} style={{gridColumn:"span 5"}} className="about-col-5">
             <div style={{background:`linear-gradient(145deg,${T.primary}12,${T.primary}06)`,border:`1.5px solid ${T.primary}33`,borderRadius:22,padding:"32px 28px",height:"100%",position:"relative",overflow:"hidden",minHeight:200,display:"flex",flexDirection:"column",justifyContent:"space-between"}}>
               <div style={{position:"absolute",top:0,left:0,right:0,height:2,background:`linear-gradient(90deg,transparent,${T.primary},transparent)`}}/>
@@ -802,8 +855,6 @@ export default function Portfolio(){
               </div>
             </div>
           </Reveal>
-
-          {/* Card 3 — Contact details (spans 5 cols on desktop) */}
           <Reveal d={.12} style={{gridColumn:"span 5"}} className="about-col-5">
             <div style={{background:T.bg1,border:`1px solid ${T.border}`,borderRadius:22,padding:"26px 24px",height:"100%",position:"relative",overflow:"hidden"}}>
               <div style={{fontFamily:"'Outfit',sans-serif",fontSize:10,color:T.primary,letterSpacing:3,textTransform:"uppercase",fontWeight:700,marginBottom:18}}>Contact Details</div>
@@ -817,8 +868,6 @@ export default function Portfolio(){
               </div>
             </div>
           </Reveal>
-
-          {/* Card 4 — Education creds (spans 7 cols on desktop) */}
           <Reveal d={.14} style={{gridColumn:"span 7"}} className="about-col-7">
             <div style={{background:T.bg1,border:`1px solid ${T.border}`,borderRadius:22,padding:"26px 28px",height:"100%",position:"relative",overflow:"hidden"}}>
               <div style={{fontFamily:"'Outfit',sans-serif",fontSize:10,color:T.primary,letterSpacing:3,textTransform:"uppercase",fontWeight:700,marginBottom:18}}>Education & Credentials</div>
@@ -835,8 +884,6 @@ export default function Portfolio(){
               </div>
             </div>
           </Reveal>
-
-          {/* Card 5 — What I do (full width) */}
           <Reveal d={.2} style={{gridColumn:"span 12"}} className="about-col-12">
             <div style={{background:T.bg1,border:`1px solid ${T.border}`,borderRadius:22,padding:"30px 28px",position:"relative",overflow:"hidden"}}>
               <div style={{position:"absolute",top:0,left:0,right:0,height:1,background:`linear-gradient(90deg,transparent,${T.primary}33,transparent)`}}/>
@@ -988,7 +1035,12 @@ export default function Portfolio(){
               ))}
             </div>
           </Reveal>
-          <Reveal d={.25}>
+          <Reveal d={.22}>
+            <div style={{marginBottom:36}}>
+              <ContactForm/>
+            </div>
+          </Reveal>
+          <Reveal d={.32}>
             <div className="contact-socials" style={{display:"flex",justifyContent:"center",gap:10,flexWrap:"wrap"}}>
               {[["GitHub","https://github.com"],["LinkedIn","https://linkedin.com"],["HackerRank","https://hackerrank.com"]].map(([label,href])=>(
                 <a key={label} href={href} target="_blank" rel="noopener" className="soc-link" data-c={label}
